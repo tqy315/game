@@ -1,0 +1,33 @@
+{% extends "mainsite/base.html" %}
+{% block title %}历史记录 - 华容道{% endblock %}
+
+{% block content %}
+<main class="content">
+  <h2 style="color:var(--gold);font-size:20px;margin-bottom:20px;padding-left:8px;border-left:3px solid var(--red);">
+    历史记录
+  </h2>
+
+  {% if records %}
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;">
+    {% for record in records %}
+    <a href="{% url 'history_detail' record.pk %}" class="card" style="display:block;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:center;padding:20px;aspect-ratio:2/1;background:linear-gradient(135deg,#f0ebe0 0%,#c8a96e 100%);">
+        <span style="font-size:40px;">🧩</span>
+      </div>
+      <div style="padding:12px;">
+        <div style="font-weight:bold;font-size:14px;color:var(--text);">{{ record.theme_name }}</div>
+        <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">
+          {{ record.difficulty }}×{{ record.difficulty }}
+          · {{ record.formatted_time }}
+          · {{ record.moves }}步<br>
+          +{{ record.score }}分 · {{ record.completed_at|date:"Y-m-d H:i" }}
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="empty-hint">还没有完成任何拼图，快去挑战吧！</p>
+  {% endif %}
+</main>
+{% endblock %}
