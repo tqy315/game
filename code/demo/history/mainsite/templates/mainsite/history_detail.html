@@ -1,0 +1,60 @@
+{% extends "mainsite/base.html" %}
+{% block title %}{{ record.theme_name }} 通关详情 - 华容道{% endblock %}
+
+{% block content %}
+<main class="content">
+  <a href="{% url 'history_list' %}" class="btn btn-outline btn-sm" style="margin-bottom:20px;">← 返回历史记录</a>
+
+  <!-- 通关统计 -->
+  <div class="card" style="text-align:center;margin-bottom:20px;border-color:var(--gold);box-shadow:0 0 24px rgba(200,169,110,0.1);">
+    <div style="font-size:48px;margin-bottom:8px;">🏆</div>
+    <h2 style="color:var(--gold);font-size:24px;margin-bottom:4px;">{{ record.theme_name }}</h2>
+    <p style="color:var(--text-dim);margin-bottom:20px;">
+      {{ record.difficulty }}×{{ record.difficulty }}
+    </p>
+
+    <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;">
+      <div style="text-align:center;padding:12px 20px;background:rgba(0,0,0,0.03);border-radius:8px;">
+        <div style="font-size:24px;font-weight:bold;color:var(--gold);">{{ record.formatted_time }}</div>
+        <div style="font-size:12px;color:var(--text-dim);">用时</div>
+      </div>
+      <div style="text-align:center;padding:12px 20px;background:rgba(0,0,0,0.03);border-radius:8px;">
+        <div style="font-size:24px;font-weight:bold;color:var(--gold);">{{ record.moves }}</div>
+        <div style="font-size:12px;color:var(--text-dim);">步数</div>
+      </div>
+      <div style="text-align:center;padding:12px 20px;background:rgba(0,0,0,0.03);border-radius:8px;">
+        <div style="font-size:24px;font-weight:bold;color:var(--gold);">{{ record.hints_used }}</div>
+        <div style="font-size:12px;color:var(--text-dim);">提示</div>
+      </div>
+      <div style="text-align:center;padding:12px 20px;background:rgba(0,0,0,0.03);border-radius:8px;">
+        <div style="font-size:24px;font-weight:bold;color:var(--gold);">+{{ record.score }}</div>
+        <div style="font-size:12px;color:var(--text-dim);">得分</div>
+      </div>
+    </div>
+
+    <p style="color:var(--text-dim);font-size:12px;margin-top:16px;">
+      完成于 {{ record.completed_at|date:"Y年m月d日 H:i" }}
+    </p>
+  </div>
+
+  <!-- 文化知识介绍 -->
+  {% if record.culture_title %}
+  <div class="card" style="background:rgba(184,134,11,0.04);">
+    <h3 style="font-size:18px;color:var(--gold);margin-bottom:16px;padding-left:8px;border-left:3px solid var(--red);">
+      {{ record.culture_title }}
+    </h3>
+    <div style="font-size:15px;line-height:2;color:var(--text);">
+      {% for paragraph in record.culture_content.splitlines %}
+        {% if paragraph|length > 0 %}
+        <p style="margin-bottom:12px;text-indent:2em;">{{ paragraph }}</p>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <div style="text-align:center;margin-top:20px;">
+    <a href="{% url 'history_list' %}" class="btn btn-outline">返回历史记录</a>
+  </div>
+</main>
+{% endblock %}

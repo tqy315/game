@@ -1,0 +1,100 @@
+{% extends "mainsite/base.html" %}
+{% block title %}设置 - 华容道{% endblock %}
+
+{% block content %}
+<main class="content">
+  <h2 style="color:var(--gold);font-size:20px;margin-bottom:20px;padding-left:8px;border-left:3px solid var(--red);">
+    设置
+  </h2>
+
+  <!-- 偏好设置 -->
+  <div class="card" style="margin-bottom:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+      <span>音效</span>
+      <label class="toggle">
+        <input type="checkbox" id="setting-sound" {% if settings.sound %}checked{% endif %} onchange="saveSetting('sound', this.checked)">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+      <span>动画效果</span>
+      <label class="toggle">
+        <input type="checkbox" id="setting-animation" {% if settings.animation %}checked{% endif %} onchange="saveSetting('animation', this.checked)">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;">
+      <span>高亮提示移动</span>
+      <label class="toggle">
+        <input type="checkbox" id="setting-highlight-hint" {% if settings.highlight_hint %}checked{% endif %} onchange="saveSetting('highlight_hint', this.checked)">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- 数据管理 -->
+  <div class="card" style="margin-bottom:16px;">
+    <h3 style="font-size:16px;color:var(--gold);margin-bottom:12px;">数据管理</h3>
+    <button class="btn btn-outline btn-danger" onclick="resetData()">重置所有数据</button>
+    <p style="color:var(--text-dim);font-size:12px;margin-top:8px;">这将清除所有积分、历史记录和个人设置</p>
+  </div>
+
+  <!-- 关于 -->
+  <div class="card">
+    <h3 style="font-size:16px;color:var(--gold);margin-bottom:12px;">关于</h3>
+    <p style="line-height:1.8;">华容道 · 中华文化拼图 v1.0</p>
+    <p style="line-height:1.8;">通过滑动拼图游戏，领略中华优秀传统文化的魅力。</p>
+    <p style="line-height:1.8;">提示系统基于广度优先搜索（BFS）算法。</p>
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      for (const cookie of document.cookie.split(';')) {
+        const c = cookie.trim();
+        if (c.startsWith(name + '=')) {
+          cookieValue = decodeURIComponent(c.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  async function saveSetting(key, value) {
+    try {
+      await fetch('/api/save-settings/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: JSON.stringify({ [key]: value }),
+      });
+    } catch (e) {
+      console.error('Save failed:', e);
+    }
+  }
+
+  async function resetData() {
+    if (!confirm('确定要重置所有数据吗？此操作不可恢复！')) return;
+    try {
+      await fetch('/api/reset-data/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken'),
+        },
+      });
+      alert('所有数据已重置');
+      window.location.reload();
+    } catch (e) {
+      console.error('Reset failed:', e);
+    }
+  }
+</script>
+{% endblock %}
