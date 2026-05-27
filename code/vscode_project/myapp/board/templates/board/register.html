@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户注册</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: #f5f7fa; }
+        .register-card {
+            max-width: 450px;
+            margin: 60px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body>
+    <div class="register-card">
+        <h3 class="text-center mb-4">创建账号</h3>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">用户名</label>
+                <input type="text" name="username" id="username" class="form-control" placeholder="请输入用户名" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">邮箱</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="name@example.com" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">密码</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="请输入密码" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">立即注册</button>
+        </form>
+        <p class="text-center text-muted mt-3" style="font-size:0.9rem;">
+            已有账号？<a href="#">去登录</a>
+        </p>
+    </div>
+</body>
+</html>
