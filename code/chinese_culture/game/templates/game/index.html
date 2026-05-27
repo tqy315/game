@@ -1,0 +1,31 @@
+{% extends 'game/base.html' %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">中华文化拼图之旅</h1>
+        <p class="hero-subtitle">探索七大主题，拼出文化之美</p>
+    </div>
+</section>
+
+<section class="themes-section">
+    <h2 class="section-title">
+        <span class="title-decoration">◆</span>
+        选择主题
+        <span class="title-decoration">◆</span>
+    </h2>
+    <div class="themes-grid">
+        {% for theme in themes %}
+        <a href="{% url 'theme_detail' theme.id %}" class="theme-card" style="background: {{ theme.bg_gradient }};">
+            <div class="theme-card-icon">{{ theme.icon }}</div>
+            <div class="theme-card-info">
+                <h3 class="theme-card-name" style="color: {{ theme.color }};">{{ theme.name }}</h3>
+                <p class="theme-card-count">{{ theme.items|length }} 个关卡</p>
+                <p class="theme-card-desc">{{ theme.description }}</p>
+            </div>
+            <div class="theme-card-arrow">→</div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

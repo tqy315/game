@@ -1,0 +1,46 @@
+{% extends 'game/base.html' %}
+
+{% block content %}
+<section class="page-section">
+    <div class="page-header">
+        <h1 class="page-title">📋 历史记录</h1>
+        <p class="page-subtitle">回顾你的拼图历程</p>
+    </div>
+
+    {% if records %}
+    <div class="history-stats-bar">
+        <span>共完成 <strong>{{ records|length }}</strong> 次拼图</span>
+        <span>总积分 <strong>⭐ {{ user.profile.points }}</strong></span>
+    </div>
+    <div class="history-grid">
+        {% for record in records %}
+        <div class="history-card">
+            <div class="history-card-header">
+                <span class="history-theme">{{ record.theme_name }}</span>
+                <span class="history-difficulty badge badge-{{ record.difficulty|slice:':1' }}">{{ record.difficulty }}</span>
+            </div>
+            <div class="history-card-body">
+                <h3 class="history-item">{{ record.item_name }}</h3>
+                <div class="history-stats">
+                    <span>⏱ {{ record.formatted_time }}</span>
+                    <span>👆 {{ record.moves }}步</span>
+                    <span>💡 {{ record.hints_used }}次</span>
+                </div>
+            </div>
+            <div class="history-card-footer">
+                <span class="history-points">+{{ record.points_earned }}分</span>
+                <span class="history-date">{{ record.completed_at|date:'Y-m-d H:i' }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <h2>暂无记录</h2>
+        <p>去完成一些拼图关卡吧！</p>
+        <a href="{% url 'index' %}" class="empty-btn">开始探索</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
