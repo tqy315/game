@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>第{{ level }}关</title>
+    <style>
+        .puzzle {
+            width: 300px;
+            height: 300px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background: #333;
+            margin: 50px auto;
+        }
+        .tile {
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+        }
+        .empty {
+            background: #222;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align:center">第{{ level }}关</h2>
+    <div class="puzzle" id="puzzle"></div>
+
+    <script>
+        const imgs = {{ imgs|safe }};
+        // 目标状态：0~8，8是空白
+        let goal = [0,1,2,3,4,5,6,7,8];
+        let tiles = [...goal];
+        let emptyIdx = 8; // 空白初始在8
+
+        // 👉 关键：打乱必须保证“可解”
+        function shuffleTiles() {
+            for (let i = 0; i < 100; i++) {
+                let dirs = [];
+                let r = Math.floor(emptyIdx / 3);
+                let c = emptyIdx % 3;
+                if (r > 0) dirs.push(-3); // 上
+                if (r < 2) dirs.push(+3); // 下
+                if (c > 0) dirs.push(-1); // 左
+                if (c < 2) dirs.push(+1); // 右
+                let move = dirs[Math.floor(Math.random() * dirs.length)];
+                [tiles[emptyIdx], tiles[emptyIdx + move]] = [tiles[emptyIdx + move], tiles[emptyIdx]];
+                emptyIdx += move;
+            }
+        }
+
+        // 渲染
+        function render() {
+            const p = document.getElementById('puzzle');
+            p.innerHTML = '';
+            tiles.forEach((t, i) => {
+                let d = document.createElement('div');
+                d.className = 'tile' + (t === 8 ? ' empty' : '');
+                if (t !== 8) d.style.backgroundImage = `url(${imgs[t]})`;
+                d.onclick = () => handleClick(i);
+                p.appendChild(d);
+            });
+        }
+
+        // 👉 正确移动逻辑：点击位置i，和空白交换
+        function handleClick(i) {
+            const r = Math.floor(i / 3);
+            const c = i % 3;
+            const er = Math.floor(emptyIdx / 3);
+            const ec = emptyIdx % 3;
+
+            const isAdj = (Math.abs(r - er) === 1 && c === ec) ||
+                          (Math.abs(c - ec) === 1 && r === er);
+            if (!isAdj) return;
+
+            // 交换
+            [tiles[i], tiles[emptyIdx]] = [tiles[emptyIdx], tiles[i]];
+            emptyIdx = i;
+            render();
+            checkWin();
+        }
+
+        // 胜利判断
+        function checkWin() {
+            if (JSON.stringify(tiles) === JSON.stringify(goal)) {
+                setTimeout(() => alert("恭喜通关！"), 100);
+            }
+        }
+
+        // 初始化
+        shuffleTiles();
+        render();
+    </script>
+</body>
+</html>
