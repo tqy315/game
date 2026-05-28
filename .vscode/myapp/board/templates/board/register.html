@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户注册</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* ========== 全局与背景 ========== */
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            /* 多层背景：宣纸底色 + 远山层叠 + 传统纹样 */
+            background-color: #f7f2e8;
+            /* 宣纸暖米色 */
+            background-image:
+                /* 远山层1 - 左上方较大山峦 */ radial-gradient(ellipse 380px 200px at 18% 72%, rgba(140, 120, 100, 0.28) 0%, rgba(140, 120, 100, 0.08) 55%, transparent 72%),
+                /* 远山层2 - 右侧山峦 */ radial-gradient(ellipse 320px 170px at 78% 68%, rgba(130, 110, 90, 0.25) 0%, rgba(130, 110, 90, 0.06) 50%, transparent 70%),
+                /* 远山层3 - 中间远处小山 */ radial-gradient(ellipse 220px 120px at 50% 76%, rgba(150, 130, 110, 0.20) 0%, rgba(150, 130, 110, 0.04) 45%, transparent 68%),
+                /* 远山层4 - 左下方近山 */ radial-gradient(ellipse 340px 160px at 10% 85%, rgba(120, 100, 80, 0.22) 0%, rgba(120, 100, 80, 0.05) 50%, transparent 75%),
+                /* 远山层5 - 右下方 */ radial-gradient(ellipse 280px 140px at 88% 82%, rgba(135, 115, 95, 0.20) 0%, rgba(135, 115, 95, 0.04) 48%, transparent 72%),
+                /* 远山层6 - 底部延绵 */ radial-gradient(ellipse 600px 180px at 50% 92%, rgba(145, 125, 105, 0.18) 0%, rgba(145, 125, 105, 0.03) 55%, transparent 78%);
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+            position: relative;
+        }
+
+        /* 传统方格暗纹（仿窗棂格/方胜纹） */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.045;
+            /* 极淡的暗纹 */
+            background-image:
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 14px,
+                    rgba(160, 130, 100, 0.8) 14px,
+                    rgba(160, 130, 100, 0.8) 15px),
+                repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 14px,
+                    rgba(160, 130, 100, 0.8) 14px,
+                    rgba(160, 130, 100, 0.8) 15px);
+            background-size: 15px 15px;
+        }
+
+        /* 飘浮的淡色云纹装饰（左上） */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -30px;
+            left: -20px;
+            width: 200px;
+            height: 200px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.10;
+            background:
+                radial-gradient(circle 40px at 50px 60px, #c9a96e 0%, transparent 70%),
+                radial-gradient(circle 30px at 90px 40px, #c9a96e 0%, transparent 65%),
+                radial-gradient(circle 35px at 130px 65px, #c9a96e 0%, transparent 68%),
+                radial-gradient(circle 25px at 70px 85px, #c9a96e 0%, transparent 60%),
+                radial-gradient(circle 45px at 100px 95px, #c9a96e 0%, transparent 72%);
+            border-radius: 50%;
+        }
+
+        /* ========== 注册卡片 ========== */
+        .register-card {
+            max-width: 450px;
+            margin: 60px auto;
+            padding: 36px 32px 30px;
+            background: linear-gradient(180deg,
+                    #fffef9 0%,
+                    #fefdf8 30%,
+                    #fdfbf4 100%);
+            /* 仿古纸暖白渐变 */
+            border-radius: 10px;
+            border: 1px solid #e5d9c6;
+            /* 暖色细边框 */
+            border-top: 5px solid #b5343a;
+            /* 顶部中国红装饰条，仿匾额边框 */
+            box-shadow:
+                0 2px 6px rgba(140, 110, 70, 0.10),
+                0 8px 28px rgba(120, 90, 50, 0.12),
+                0 20px 50px rgba(100, 70, 40, 0.08);
+            /* 暖色调多层阴影 */
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 卡片四角装饰（传统角花纹样 - 使用边框折角效果） */
+        .register-card::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -1px;
+            width: 28px;
+            height: 28px;
+            pointer-events: none;
+            border-left: 3px solid #c9a96e;
+            border-top: 3px solid #c9a96e;
+            border-radius: 4px 0 0 0;
+            opacity: 0.7;
+            z-index: 2;
+        }
+
+        .register-card::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            right: -1px;
+            width: 28px;
+            height: 28px;
+            pointer-events: none;
+            border-right: 3px solid #c9a96e;
+            border-top: 3px solid #c9a96e;
+            border-radius: 0 4px 0 0;
+            opacity: 0.7;
+            z-index: 2;
+        }
+
+        /* 卡片内部底部角花 */
+        .card-inner-corners {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .card-inner-corners::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -1px;
+            width: 28px;
+            height: 28px;
+            border-left: 3px solid #c9a96e;
+            border-bottom: 3px solid #c9a96e;
+            border-radius: 0 0 0 4px;
+            opacity: 0.7;
+        }
+        .card-inner-corners::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: -1px;
+            width: 28px;
+            height: 28px;
+            border-right: 3px solid #c9a96e;
+            border-bottom: 3px solid #c9a96e;
+            border-radius: 0 0 4px 0;
+            opacity: 0.7;
+        }
+
+        /* ========== 印章装饰 ========== */
+        .seal-stamp {
+            position: absolute;
+            top: -8px;
+            right: 28px;
+            width: 62px;
+            height: 62px;
+            background: #b5343a;
+            /* 朱砂红 */
+            border: 2.5px solid #7a1f25;
+            /* 深红边框 */
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(-14deg);
+            /* 模拟手工盖印的微斜 */
+            box-shadow:
+                inset 0 0 8px rgba(0, 0, 0, 0.20),
+                1px 2px 6px rgba(120, 60, 40, 0.35);
+            z-index: 3;
+            pointer-events: none;
+            user-select: none;
+        }
+        .seal-stamp .seal-text {
+            writing-mode: vertical-rl;
+            /* 竖排文字 */
+            color: #fef5e7;
+            /* 白文（阴刻）效果 */
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-family: "STSong", "Songti SC", "SimSun", "KaiTi", "STKaiti", serif;
+            /* 传统衬线/楷体 */
+            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
+            line-height: 1;
+        }
+
+        /* ========== 标题样式 ========== */
+        .register-card h3 {
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", serif;
+            /* 衬线字体，传统韵味 */
+            color: #3c2415;
+            /* 深墨色 */
+            letter-spacing: 3px;
+            font-weight: 600;
+            position: relative;
+            margin-bottom: 1.2rem;
+        }
+
+        /* 标题下方装饰线（枣核线） */
+        .register-card h3::after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 2.5px;
+            background: linear-gradient(to right,
+                    transparent 0%,
+                    #c9a96e 15%,
+                    #b5343a 50%,
+                    #c9a96e 85%,
+                    transparent 100%);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* ========== 表单标签 ========== */
+        .form-label {
+            color: #4a3525;
+            /* 深棕色 */
+            font-weight: 500;
+            font-size: 0.93rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== 输入框样式 ========== */
+        .form-control {
+            background-color: #fefdf9;
+            /* 极浅暖白 */
+            border: 1.5px solid #d9ccb6;
+            /* 暖灰棕色边框 */
+            border-radius: 8px;
+            color: #3c2415;
+            /* 深墨色文字 */
+            padding: 10px 14px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .form-control:focus {
+            border-color: #b5343a;
+            /* 中国红聚焦边框 */
+            box-shadow:
+                0 0 0 0.2rem rgba(181, 52, 58, 0.18),
+                inset 0 1px 3px rgba(0, 0, 0, 0.04);
+            /* 红色光晕替代Bootstrap默认蓝色 */
+            background-color: #fffefb;
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: #c4b8a7;
+            /* 暖灰placeholder */
+            opacity: 0.8;
+        }
+
+        /* ========== 按钮样式 ========== */
+        .btn-primary {
+            background: linear-gradient(180deg, #c94043 0%, #b5343a 40%, #9e1f28 100%);
+            /* 中国红渐变，仿漆器质感 */
+            border: 1.5px solid #7a1f25;
+            border-radius: 8px;
+            color: #fef5e7;
+            font-weight: 600;
+            letter-spacing: 2px;
+            font-size: 1rem;
+            padding: 11px 0;
+            transition: all 0.3s ease;
+            box-shadow:
+                0 3px 8px rgba(160, 50, 40, 0.30),
+                0 1px 3px rgba(0, 0, 0, 0.10);
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(180deg, #d44549 0%, #c13a40 40%, #a8252f 100%);
+            border-color: #6b1a20;
+            box-shadow:
+                0 5px 14px rgba(170, 55, 45, 0.38),
+                0 2px 5px rgba(0, 0, 0, 0.13);
+            transform: translateY(-1px);
+            color: #fffef9;
+        }
+
+        .btn-primary:active,
+        .btn-primary:focus-visible {
+            background: linear-gradient(180deg, #a8252f 0%, #8e1b24 100%) !important;
+            border-color: #5c151b !important;
+            box-shadow:
+                0 1px 3px rgba(140, 40, 30, 0.40),
+                inset 0 2px 4px rgba(0, 0, 0, 0.25) !important;
+            transform: translateY(1px);
+            outline: none;
+        }
+
+        /* ========== 底部链接 ========== */
+        .register-card+p {
+            color: #6b5c4a !important;
+            /* 覆盖text-muted */
+        }
+        .register-card+p a {
+            color: #b5343a;
+            /* 中国红链接 */
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.25s;
+        }
+        .register-card+p a:hover {
+            color: #7a1f25;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        /* ========== 响应式调整 ========== */
+        @media (max-width: 500px) {
+            .register-card {
+                margin: 30px 16px;
+                padding: 28px 20px 24px;
+                border-radius: 8px;
+            }
+            .seal-stamp {
+                width: 48px;
+                height: 48px;
+                top: -6px;
+                right: 16px;
+                border-radius: 5px;
+            }
+            .seal-stamp .seal-text {
+                font-size: 0.85rem;
+                letter-spacing: 2px;
+            }
+            .register-card h3 {
+                font-size: 1.35rem;
+                letter-spacing: 2px;
+            }
+            .register-card::before,
+            .register-card::after {
+                width: 20px;
+                height: 20px;
+            }
+            .card-inner-corners::before,
+            .card-inner-corners::after {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .seal-stamp {
+                width: 40px;
+                height: 40px;
+                top: -4px;
+                right: 10px;
+                border-radius: 4px;
+                border-width: 2px;
+            }
+            .seal-stamp .seal-text {
+                font-size: 0.7rem;
+                letter-spacing: 1px;
+            }
+            .register-card h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-card">
+        <!-- 印章装饰 -->
+        <div class="seal-stamp">
+            <span class="seal-text">注册</span>
+        </div>
+
+        <!-- 底部角花装饰层 -->
+        <div class="card-inner-corners"></div>
+
+        <h3 class="text-center mb-4">创建账号</h3>
+
+        <!-- 错误消息显示 -->
+        {% if error %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ error }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">用户名</label>
+                <input type="text" name="username" id="username" class="form-control" placeholder="请输入用户名" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">邮箱</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="name@example.com" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">密码</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="请输入密码" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">立即注册</button>
+        </form>
+        <p class="text-center text-muted mt-3" style="font-size:0.9rem;">
+            已有账号？<a href="/login/">去登录</a>
+        </p>
+    </div>
+
+    <!-- Bootstrap JS (用于关闭 alert 按钮) -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

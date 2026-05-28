@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录成功</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* ========== 全局与山水背景 ========== */
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f2e8;
+            /* 宣纸暖米色 */
+            background-image:
+                /* 远山层1 */ radial-gradient(ellipse 380px 200px at 18% 72%, rgba(140, 120, 100, 0.28) 0%, rgba(140, 120, 100, 0.08) 55%, transparent 72%),
+                /* 远山层2 */ radial-gradient(ellipse 320px 170px at 78% 68%, rgba(130, 110, 90, 0.25) 0%, rgba(130, 110, 90, 0.06) 50%, transparent 70%),
+                /* 远山层3 */ radial-gradient(ellipse 220px 120px at 50% 76%, rgba(150, 130, 110, 0.20) 0%, rgba(150, 130, 110, 0.04) 45%, transparent 68%),
+                /* 远山层4 */ radial-gradient(ellipse 340px 160px at 10% 85%, rgba(120, 100, 80, 0.22) 0%, rgba(120, 100, 80, 0.05) 50%, transparent 75%),
+                /* 远山层5 */ radial-gradient(ellipse 280px 140px at 88% 82%, rgba(135, 115, 95, 0.20) 0%, rgba(135, 115, 95, 0.04) 48%, transparent 72%),
+                /* 远山层6 */ radial-gradient(ellipse 600px 180px at 50% 92%, rgba(145, 125, 105, 0.18) 0%, rgba(145, 125, 105, 0.03) 55%, transparent 78%);
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+            position: relative;
+        }
+
+        /* 方格暗纹 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.045;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 14px, rgba(160, 130, 100, 0.8) 14px, rgba(160, 130, 100, 0.8) 15px),
+                repeating-linear-gradient(90deg, transparent, transparent 14px, rgba(160, 130, 100, 0.8) 14px, rgba(160, 130, 100, 0.8) 15px);
+            background-size: 15px 15px;
+        }
+
+        /* 左上云纹 */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -30px;
+            left: -20px;
+            width: 200px;
+            height: 200px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.10;
+            background:
+                radial-gradient(circle 40px at 50px 60px, #c9a96e 0%, transparent 70%),
+                radial-gradient(circle 30px at 90px 40px, #c9a96e 0%, transparent 65%),
+                radial-gradient(circle 35px at 130px 65px, #c9a96e 0%, transparent 68%),
+                radial-gradient(circle 25px at 70px 85px, #c9a96e 0%, transparent 60%),
+                radial-gradient(circle 45px at 100px 95px, #c9a96e 0%, transparent 72%);
+            border-radius: 50%;
+        }
+
+        /* ========== 登录成功卡片 ========== */
+        .success-card {
+            max-width: 460px;
+            margin: 60px auto;
+            padding: 38px 32px 32px;
+            background: linear-gradient(180deg, #fffef9 0%, #fefdf8 30%, #fdfbf4 100%);
+            border-radius: 10px;
+            border: 1px solid #e5d9c6;
+            border-top: 5px solid #b5343a;
+            box-shadow:
+                0 2px 6px rgba(140, 110, 70, 0.10),
+                0 8px 28px rgba(120, 90, 50, 0.12),
+                0 20px 50px rgba(100, 70, 40, 0.08);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 四角角花 */
+        .success-card::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -1px;
+            width: 28px;
+            height: 28px;
+            pointer-events: none;
+            border-left: 3px solid #c9a96e;
+            border-top: 3px solid #c9a96e;
+            border-radius: 4px 0 0 0;
+            opacity: 0.7;
+            z-index: 2;
+        }
+        .success-card::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            right: -1px;
+            width: 28px;
+            height: 28px;
+            pointer-events: none;
+            border-right: 3px solid #c9a96e;
+            border-top: 3px solid #c9a96e;
+            border-radius: 0 4px 0 0;
+            opacity: 0.7;
+            z-index: 2;
+        }
+        .card-corners {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .card-corners::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -1px;
+            width: 28px;
+            height: 28px;
+            border-left: 3px solid #c9a96e;
+            border-bottom: 3px solid #c9a96e;
+            border-radius: 0 0 0 4px;
+            opacity: 0.7;
+        }
+        .card-corners::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: -1px;
+            width: 28px;
+            height: 28px;
+            border-right: 3px solid #c9a96e;
+            border-bottom: 3px solid #c9a96e;
+            border-radius: 0 0 4px 0;
+            opacity: 0.7;
+        }
+
+        /* ========== 印章装饰（成功） ========== */
+        .seal-stamp {
+            position: absolute;
+            top: -10px;
+            right: 28px;
+            width: 68px;
+            height: 68px;
+            background: #b5343a;
+            border: 2.5px solid #7a1f25;
+            border-radius: 50%;
+            /* 圆形印章，更古典 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(-12deg);
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.20), 1px 2px 6px rgba(120, 60, 40, 0.35);
+            z-index: 3;
+            pointer-events: none;
+            user-select: none;
+        }
+        .seal-stamp .seal-text {
+            writing-mode: vertical-rl;
+            color: #fef5e7;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            font-family: "STSong", "Songti SC", "SimSun", "KaiTi", "STKaiti", serif;
+            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
+            line-height: 1;
+        }
+
+        /* ========== 欢迎区域 ========== */
+        .welcome-icon {
+            width: 70px;
+            height: 70px;
+            background: #fef5e7;
+            border: 2px solid #d9ccb6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 2.4rem;
+            color: #b5343a;
+            box-shadow: 0 3px 8px rgba(140, 110, 70, 0.15);
+            position: relative;
+        }
+        /* 小祥云装饰 */
+        .welcome-icon::after {
+            content: "☁️";
+            position: absolute;
+            top: -18px;
+            right: -14px;
+            font-size: 1.8rem;
+            opacity: 0.5;
+            transform: rotate(10deg);
+        }
+        .success-card h3 {
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", serif;
+            color: #3c2415;
+            letter-spacing: 3px;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+        .success-card h3::after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 2.5px;
+            background: linear-gradient(to right, transparent 0%, #c9a96e 15%, #b5343a 50%, #c9a96e 85%, transparent 100%);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+        .user-greeting {
+            color: #4a3525;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 1.8rem;
+            text-align: center;
+        }
+        .user-greeting span {
+            color: #b5343a;
+            font-weight: 700;
+            border-bottom: 2px dotted #c9a96e;
+            padding-bottom: 2px;
+        }
+
+        /* ========== 按钮组 ========== */
+        .btn-chinese-red {
+            background: linear-gradient(180deg, #c94043 0%, #b5343a 40%, #9e1f28 100%);
+            border: 1.5px solid #7a1f25;
+            border-radius: 8px;
+            color: #fef5e7;
+            font-weight: 600;
+            letter-spacing: 2px;
+            font-size: 1rem;
+            padding: 11px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(160, 50, 40, 0.30), 0 1px 3px rgba(0, 0, 0, 0.10);
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+        .btn-chinese-red:hover {
+            background: linear-gradient(180deg, #d44549 0%, #c13a40 40%, #a8252f 100%);
+            border-color: #6b1a20;
+            box-shadow: 0 5px 14px rgba(170, 55, 45, 0.38), 0 2px 5px rgba(0, 0, 0, 0.13);
+            transform: translateY(-1px);
+            color: #fffef9;
+            text-decoration: none;
+        }
+        .btn-chinese-red:active {
+            background: linear-gradient(180deg, #a8252f 0%, #8e1b24 100%) !important;
+            border-color: #5c151b !important;
+            box-shadow: 0 1px 3px rgba(140, 40, 30, 0.40), inset 0 2px 4px rgba(0, 0, 0, 0.25) !important;
+            transform: translateY(1px);
+        }
+        .btn-outline-chinese {
+            background: transparent;
+            border: 1.5px solid #c9a96e;
+            border-radius: 8px;
+            color: #6b5c4a;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            font-size: 0.95rem;
+            padding: 9px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            background-color: #fefdf9;
+        }
+        .btn-outline-chinese:hover {
+            border-color: #b5343a;
+            color: #b5343a;
+            background-color: #fff9f2;
+            box-shadow: 0 3px 8px rgba(160, 50, 40, 0.10);
+            text-decoration: none;
+        }
+
+        /* ========== 底部链接 ========== */
+        .footer-note {
+            color: #6b5c4a;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-top: 18px;
+            letter-spacing: 0.5px;
+        }
+        .footer-note a {
+            color: #b5343a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .footer-note a:hover {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            color: #7a1f25;
+        }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 500px) {
+            .success-card {
+                margin: 35px 16px;
+                padding: 30px 20px 26px;
+            }
+            .seal-stamp {
+                width: 52px;
+                height: 52px;
+                top: -8px;
+                right: 16px;
+            }
+            .seal-stamp .seal-text {
+                font-size: 1rem;
+                letter-spacing: 3px;
+            }
+            .welcome-icon {
+                width: 56px;
+                height: 56px;
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-card">
+        <!-- 圆形印章：成功 -->
+        <div class="seal-stamp">
+            <span class="seal-text">成功</span>
+        </div>
+        <!-- 底部角花层 -->
+        <div class="card-corners"></div>
+
+        <!-- 欢迎图标（仿如意/祥云） -->
+        <div class="welcome-icon">🌸</div>
+        <!-- 标题 -->
+        <h3 class="text-center">登录成功</h3>
+        <!-- 用户问候语（此处用户名可替换为动态变量） -->
+        <div class="user-greeting">
+            欢迎回来，<span>{{user.username}}</span>
+        </div>
+
+        <!-- 操作按钮 -->
+        <a href="#" class="btn-chinese-red">🏮 进入主页</a>
+        <a href="#" class="btn-outline-chinese">↪️ 退出登录</a>
+
+        <!-- 额外提示 -->
+        <div class="footer-note">
+            愿君乘兴而来，尽兴而归。<br>
+            <a href="#">返回个人中心</a>
+        </div>
+    </div>
+</body>
+</html>
