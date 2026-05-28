@@ -1,0 +1,68 @@
+{% extends 'game/base.html' %}
+
+{% block content %}
+<section class="page-section">
+    <div class="page-header">
+        <h1 class="page-title">🏆 成就殿堂</h1>
+        <p class="page-subtitle">回顾你探索过的文化拼图，温故而知新</p>
+    </div>
+
+    {% if grouped_achievements %}
+    <div class="achievements-stats-bar">
+        <span>共解锁 <strong>{{ total_count }}</strong> 个文化知识</span>
+        <span>涵盖 <strong>{{ grouped_achievements|length }}</strong> 个主题</span>
+    </div>
+
+    {% for theme_name, group in grouped_achievements %}
+    <div class="achievements-section">
+        <div class="achievements-theme-header"
+             style="background: {% if group.theme %}{{ group.theme.bg_gradient }}{% else %}linear-gradient(135deg, #8b7d6b, #6b5d4b){% endif %};"
+             onclick="this.classList.toggle('collapsed'); this.nextElementSibling.classList.toggle('collapsed');">
+            <span class="achievements-theme-icon">{% if group.theme %}{{ group.theme.icon }}{% else %}📚{% endif %}</span>
+            <span class="achievements-theme-name">{% if group.theme %}{{ group.theme.name }}{% else %}{{ theme_name }}{% endif %}</span>
+            <span class="achievements-theme-count">{{ group.records|length }} 个成就</span>
+            <span class="achievements-theme-arrow">▼</span>
+        </div>
+
+        <div class="achievements-grid">
+            {% for record in group.records %}
+            <div class="achievement-card" onclick="this.classList.toggle('expanded');">
+                <div class="achievement-card-header">
+                    <div class="achievement-card-icon">{% if group.theme %}{{ group.theme.icon }}{% else %}🧩{% endif %}</div>
+                    <div class="achievement-card-info">
+                        <h3 class="achievement-card-name">{{ record.item_name }}</h3>
+                        <div class="achievement-card-meta">
+                            <span>⏱ {{ record.formatted_time }}</span>
+                            <span>👆 {{ record.moves }}步</span>
+                        </div>
+                    </div>
+                    <span class="achievement-card-badge badge-{{ record.difficulty|slice:':1' }}">{{ record.difficulty }}</span>
+                    <span class="achievement-card-expand">▼</span>
+                </div>
+                <div class="achievement-card-detail">
+                    <div class="achievement-card-culture">
+                        <div class="achievement-card-culture-header">📖 文化知识</div>
+                        <div class="achievement-card-culture-title">{{ record.culture_title }}</div>
+                        <div class="achievement-card-culture-content">{{ record.culture_content }}</div>
+                    </div>
+                    <div class="achievement-card-extra">
+                        <span>🌟 +{{ record.points_earned }}积分</span>
+                        <span>📅 {{ record.completed_at|date:'Y-m-d H:i' }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">🏆</div>
+        <h2>暂无成就</h2>
+        <p>完成拼图关卡后，这里会记录你的文化探索成就，可以随时回顾学到的知识！</p>
+        <a href="{% url 'index' %}" class="empty-btn">开始探索</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

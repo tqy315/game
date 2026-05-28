@@ -1,0 +1,104 @@
+{% extends 'game/base.html' %}
+
+{% block content %}
+<section class="page-section">
+    <div class="page-header">
+        <h1 class="page-title">⚙️ 设置</h1>
+    </div>
+
+    <div class="settings-layout">
+        <!-- 个人资料 -->
+        <div class="settings-card">
+            <h2 class="settings-card-title">👤 个人资料</h2>
+            <form method="POST" class="settings-form">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="update_profile">
+
+                <div class="form-group">
+                    <label>当前头像</label>
+                    <div class="current-avatar">{{ profile.avatar }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label>选择头像</label>
+                    <div class="avatar-picker">
+                        {% for a in avatar_options %}
+                        <label class="avatar-option {% if profile.avatar == a %}selected{% endif %}">
+                            <input type="radio" name="avatar" value="{{ a }}" {% if profile.avatar == a %}checked{% endif %}>
+                            <span class="avatar-emoji">{{ a }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nickname">昵称</label>
+                    <input type="text" id="nickname" name="nickname" value="{{ profile.nickname }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>当前积分</label>
+                    <div class="points-display">⭐ {{ profile.points }} 积分</div>
+                </div>
+
+                <button type="submit" class="settings-btn save">保存资料</button>
+            </form>
+        </div>
+
+        <!-- 游戏偏好 -->
+        <div class="settings-card">
+            <h2 class="settings-card-title">🎮 游戏偏好</h2>
+            <form method="POST" class="settings-form">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="update_settings">
+
+                <div class="toggle-item">
+                    <span class="toggle-label">音效</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="sound_enabled" {% if profile.sound_enabled %}checked{% endif %}>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-item">
+                    <span class="toggle-label">动画</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="animation_enabled" {% if profile.animation_enabled %}checked{% endif %}>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-item">
+                    <span class="toggle-label">高亮提示</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="highlight_enabled" {% if profile.highlight_enabled %}checked{% endif %}>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="settings-btn save">保存设置</button>
+            </form>
+        </div>
+
+        <!-- 数据管理 -->
+        <div class="settings-card danger-card">
+            <h2 class="settings-card-title">⚠️ 数据管理</h2>
+            <p class="danger-desc">重置将清除所有游戏记录和积分，此操作不可撤销。</p>
+            <form method="POST" onsubmit="return confirm('确定要重置所有数据吗？此操作不可撤销！');">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="reset_data">
+                <button type="submit" class="settings-btn danger">重置所有数据</button>
+            </form>
+        </div>
+
+        <!-- 关于 -->
+        <div class="settings-card">
+            <h2 class="settings-card-title">ℹ️ 关于</h2>
+            <div class="about-content">
+                <p><strong>中华文化拼图之旅</strong></p>
+                <p>版本 1.0</p>
+                <p>通过数字华容道拼图游戏，探索中华传统文化的魅力。</p>
+                <p>七大主题，数十个关卡等你来挑战！</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
