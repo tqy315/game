@@ -10,7 +10,7 @@
   <div class="subtopic-grid">
     {% for st in theme.subTopics %}
     <div class="st-card {% if st.id in completed_ids %}completed{% endif %}"
-         onclick="startGame('{{ theme.id }}','{{ st.id }}')">
+         onclick="startGame('{{ theme.id }}','{{ theme.name }}','{{ st.id }}','{{ st.name }}')">
       <div class="st-icon">{{ st.icon }}</div>
       <div class="st-name">{{ st.name }}</div>
       <div class="st-desc">{{ st.desc }}</div>
@@ -20,9 +20,11 @@
   </div>
 </div>
 <script>
-function startGame(tid,sid){
+function startGame(tid,tname,sid,sname){
   sessionStorage.setItem('theme_id',tid);
+  sessionStorage.setItem('theme_name',tname);
   sessionStorage.setItem('subtopic_id',sid);
+  sessionStorage.setItem('subtopic_name',sname);
   window.location.href=URLS.game;
 }
 </script>

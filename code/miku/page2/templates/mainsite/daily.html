@@ -19,9 +19,11 @@
 </div>
 <script>
 function startDaily(){
-  sessionStorage.setItem('daily_theme_id','{{ theme.id }}');
-  sessionStorage.setItem('daily_subtopic_id','{{ subtopic.id }}');
-  sessionStorage.setItem('daily_difficulty','{{ difficulty }}');
+  sessionStorage.setItem('theme_id','{{ theme.id }}');
+  sessionStorage.setItem('theme_name','{{ theme.name }}');
+  sessionStorage.setItem('subtopic_id','{{ subtopic.id }}');
+  sessionStorage.setItem('subtopic_name','{{ subtopic.name }}');
+  sessionStorage.setItem('difficulty','{{ difficulty }}');
   window.location.href=URLS.game+'?daily=1';
 }
 </script>

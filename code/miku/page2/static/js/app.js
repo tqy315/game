@@ -127,9 +127,15 @@ function renderBoard() {
     tile.className = 'tile' + (val === 0 ? ' empty' : '');
     tile.setAttribute('data-index', i);
     if (val !== 0) {
-      // draw number and style
-      tile.style.background = 'linear-gradient(135deg,' + (theme ? theme.colors[0] : '#c41e3a') + ',' + (theme ? theme.colors[1] : '#a01830') + ')';
-      tile.textContent = val;
+      var imgUrl = getTileImageUrl(APP.themeName, APP.subtopicName, val, APP.difficulty);
+      if (imgUrl) {
+        tile.style.backgroundImage = 'url(' + imgUrl + ')';
+        tile.style.backgroundSize = 'cover';
+        tile.style.backgroundPosition = 'center';
+      } else {
+        tile.style.background = 'linear-gradient(135deg,' + (theme ? theme.colors[0] : '#c41e3a') + ',' + (theme ? theme.colors[1] : '#a01830') + ')';
+        tile.textContent = val;
+      }
       tile.addEventListener('click', function(idx) { return function() { onTileClick(idx); }; }(i));
     }
     board.appendChild(tile);
