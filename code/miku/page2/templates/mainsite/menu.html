@@ -1,0 +1,61 @@
+{% extends 'mainsite/base.html' %}
+{% block title %}主题选择 - 国风华容道{% endblock %}
+{% block content %}
+<div id="menu-screen" class="screen active">
+  <header class="menu-header">
+    <div class="user-bar">
+      <a href="{% url 'profile' %}" class="avatar-link">
+        {% if profile.avatar_data %}<img src="{{ profile.avatar_data }}" class="avatar-img" alt="头像">{% else %}<span class="avatar-emoji">🐼</span>{% endif %}
+        <span class="user-nick">{{ profile.nickname|default:user.username }}</span>
+      </a>
+      <span class="points-badge">{{ profile.total_points }} 积分</span>
+    </div>
+    <div class="nav-links">
+      <a href="{% url 'daily' %}" class="nav-link">每日挑战</a>
+      <a href="{% url 'leaderboard' %}" class="nav-link">排行榜</a>
+      <a href="{% url 'history' %}" class="nav-link">历史记录</a>
+      <a href="{% url 'settings' %}" class="nav-link">设置</a>
+      <a href="{% url 'logout' %}" class="nav-link nav-logout">退出</a>
+    </div>
+  </header>
+
+  <div class="menu-content">
+    <h2 class="section-title">选择文化主题</h2>
+
+    <div class="theme-grid">
+      {% for theme in themes %}
+      <div class="theme-card" onclick="goSubtopic('{{ theme.id }}')">
+        <div class="theme-icon">{{ theme.icon }}</div>
+        <div class="theme-name">{{ theme.name }}</div>
+        <div class="theme-desc">{{ theme.shortDesc }}</div>
+        <div class="theme-progress"><div class="progress-bar"><div class="progress-fill" style="width:{% widthratio theme.done theme.total 100 %}%"></div></div><span class="progress-text">{{ theme.done }}/{{ theme.total }}</span></div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="diff-section">
+      <h3>选择难度</h3>
+      <div class="diff-options">
+        {% for key, cfg in difficulties.items %}
+        <label class="diff-radio"><input type="radio" name="difficulty" value="{{ key }}" {% if key == 3 %}checked{% endif %}> {{ cfg.label }} ({{ key }}×{{ key }})</label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="rewards-section">
+      <h3>成就徽章</h3>
+      <div class="rewards-row">
+        {% for r in rewards %}
+        <div class="reward-item {% if r.id in earned_reward_ids %}earned{% else %}locked{% endif %}" title="{{ r.desc }}">
+          <span class="reward-icon">{{ r.icon }}</span>
+          <span class="reward-name">{{ r.name }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function goSubtopic(id){var d=document.querySelector('input[name="difficulty"]:checked');sessionStorage.setItem('difficulty',d?d.value:'3');window.location.href=URLS.subtopic+'?theme_id='+id;}
+</script>
+{% endblock %}

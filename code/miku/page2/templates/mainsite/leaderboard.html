@@ -1,0 +1,31 @@
+{% extends 'mainsite/base.html' %}
+{% block title %}排行榜 - 国风华容道{% endblock %}
+{% block content %}
+<div id="leaderboard-screen" class="screen active">
+  <div class="page-header">
+    <a href="{% url 'menu' %}" class="back-btn">← 返回菜单</a>
+    <h1>🏅 排行榜</h1>
+  </div>
+  <div class="lb-content">
+    <div class="lb-my-rank">
+      <span>我的积分</span><b>{{ user.profile.total_points }}</b>
+    </div>
+    <div class="lb-list">
+      {% for p in profiles %}
+      <div class="lb-row {% if p.user == user %}is-me{% endif %}">
+        <span class="lb-rank">
+          {% if forloop.counter == 1 %}🥇{% elif forloop.counter == 2 %}🥈{% elif forloop.counter == 3 %}🥉{% else %}{{ forloop.counter }}{% endif %}
+        </span>
+        <span class="lb-avatar">
+          {% if p.avatar_data %}<img src="{{ p.avatar_data }}" class="avatar-img">{% else %}<span class="avatar-emoji">🐼</span>{% endif %}
+        </span>
+        <span class="lb-name">{{ p.nickname|default:p.user.username }}</span>
+        <span class="lb-points">{{ p.total_points }} 分</span>
+      </div>
+      {% empty %}
+      <p class="empty-msg">还没有排行数据，快去挑战关卡吧！</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

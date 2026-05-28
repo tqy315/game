@@ -1,0 +1,59 @@
+{% extends 'mainsite/base.html' %}
+{% block title %}个人中心 - 国风华容道{% endblock %}
+{% block content %}
+<div id="profile-screen" class="screen active">
+  <div class="page-header">
+    <a href="{% url 'menu' %}" class="back-btn">← 返回菜单</a>
+    <h1>👤 个人中心</h1>
+  </div>
+  <div class="profile-content">
+    <div class="profile-avatar-section">
+      <div class="avatar-large" id="avatar-display" onclick="document.getElementById('avatar-file').click()">
+        {% if profile.avatar_data %}<img src="{{ profile.avatar_data }}" alt="头像">{% else %}<span class="avatar-emoji-lg">🐼</span>{% endif %}
+      </div>
+      <form method="post" id="avatar-form" style="display:none">
+        {% csrf_token %}
+        <input type="hidden" name="avatar_data" id="avatar-data">
+      </form>
+      <input type="file" id="avatar-file" accept="image/*" style="display:none" onchange="uploadAvatar(this)">
+    </div>
+    <div class="profile-stats">
+      <div class="pstat"><b>{{ profile.total_points }}</b><span>积分</span></div>
+      <div class="pstat"><b>{{ profile.total_games }}</b><span>完成关卡</span></div>
+      <div class="pstat"><b>{{ earned_badges|length }}</b><span>徽章</span></div>
+      <div class="pstat"><b>{{ total_3 }}</b><span>3×3</span></div>
+      <div class="pstat"><b>{{ total_4 }}</b><span>4×4</span></div>
+      {% if profile.best_time %}<div class="pstat"><b>{{ profile.best_time }}s</b><span>最佳时间</span></div>{% endif %}
+      {% if profile.best_moves %}<div class="pstat"><b>{{ profile.best_moves }}</b><span>最佳步数</span></div>{% endif %}
+    </div>
+    <div class="nickname-form">
+      <form method="post">
+        {% csrf_token %}
+        <input type="text" name="nickname" value="{{ profile.nickname }}" placeholder="设置昵称" class="input-field" maxlength="50">
+        <button type="submit" class="btn btn-small btn-primary">保存昵称</button>
+      </form>
+    </div>
+    <div class="badges-section">
+      <h3>已获得的徽章</h3>
+      <div class="badges-grid">
+        {% for b in earned_badges %}
+        <div class="badge-item earned"><span class="badge-icon">{{ b.icon }}</span><span>{{ b.name }}</span></div>
+        {% empty %}
+        <p class="empty-msg">还没有获得徽章，完成关卡赚取积分吧！</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function uploadAvatar(input){
+  if(!input.files||!input.files[0])return;
+  var r=new FileReader();
+  r.onload=function(e){
+    document.getElementById('avatar-data').value=e.target.result;
+    document.getElementById('avatar-form').submit();
+  };
+  r.readAsDataURL(input.files[0]);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'mainsite/base.html' %}
+{% block title %}设置 - 国风华容道{% endblock %}
+{% block content %}
+<div id="settings-screen" class="screen active">
+  <div class="page-header">
+    <a href="{% url 'menu' %}" class="back-btn">← 返回菜单</a>
+    <h1>⚙️ 设置</h1>
+  </div>
+  <div class="settings-content">
+    {% if msg %}<div class="msg-box {% if '成功' in msg %}msg-ok{% else %}msg-err{% endif %}">{{ msg }}</div>{% endif %}
+    <div class="settings-card">
+      <h3>偏好设置</h3>
+      <div class="setting-row"><span>音效</span><label class="toggle"><input type="checkbox" id="toggle-sound" checked onchange="toggleSetting('sound',this.checked)"><span class="toggle-slider"></span></label></div>
+      <div class="setting-row"><span>动画</span><label class="toggle"><input type="checkbox" id="toggle-anim" checked onchange="toggleSetting('anim',this.checked)"><span class="toggle-slider"></span></label></div>
+      <div class="setting-row"><span>显示提示</span><label class="toggle"><input type="checkbox" id="toggle-hints" checked onchange="toggleSetting('hints',this.checked)"><span class="toggle-slider"></span></label></div>
+    </div>
+    <div class="settings-card">
+      <h3>修改密码</h3>
+      <form method="post" class="settings-form">
+        {% csrf_token %}
+        <div class="input-group"><label>当前密码</label>{{ form.old_password }}</div>
+        <div class="input-group"><label>新密码</label>{{ form.new_password }}</div>
+        <div class="input-group"><label>确认新密码</label>{{ form.new_password2 }}</div>
+        <button type="submit" class="btn btn-primary">修改密码</button>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+function toggleSetting(k,v){localStorage.setItem('setting_'+k,v?'1':'0');}
+</script>
+{% endblock %}

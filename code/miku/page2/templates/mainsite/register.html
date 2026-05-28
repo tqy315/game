@@ -1,0 +1,18 @@
+{% extends 'mainsite/base.html' %}
+{% block title %}注册 - 国风华容道{% endblock %}
+{% block content %}
+<div id="login-screen" class="screen active">
+  <div class="login-card">
+    <div class="logo-area"><div class="logo-icon">華</div><h1>国风华容道</h1><p class="subtitle">注册账号，开启文化之旅</p></div>
+    {% if error %}<div class="error-msg">{{ error }}</div>{% endif %}
+    <form method="post" class="login-form" novalidate>
+      {% csrf_token %}
+      <div class="input-group"><label for="id_username">用户名</label><input type="text" name="username" placeholder="请输入用户名" class="input-field" required id="id_username"></div>
+      <div class="input-group"><label for="id_password">密码</label><input type="password" name="password" placeholder="请输入密码（至少6位）" class="input-field" required id="id_password"></div>
+      <div class="input-group"><label for="id_password2">确认密码</label><input type="password" name="password2" placeholder="请再次输入密码" class="input-field" required id="id_password2"></div>
+      <button type="submit" class="btn btn-primary btn-large">注 册</button>
+    </form>
+    <p class="login-hint">已有账号？<a href="{% url 'login' %}" class="link-gold">返回登录</a></p>
+  </div>
+</div>
+{% endblock %}

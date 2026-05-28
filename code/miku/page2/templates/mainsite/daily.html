@@ -1,0 +1,28 @@
+{% extends 'mainsite/base.html' %}
+{% block title %}每日挑战 - 国风华容道{% endblock %}
+{% block content %}
+<div id="daily-screen" class="screen active">
+  <div class="page-header">
+    <a href="{% url 'menu' %}" class="back-btn">← 返回菜单</a>
+    <h1>📅 每日挑战</h1>
+  </div>
+  <div class="daily-content">
+    <div class="daily-card">
+      <div class="daily-date">{{ today|date:"Y年m月d日" }}</div>
+      <div class="daily-theme">{{ theme.icon }} {{ theme.name }}</div>
+      <div class="daily-subtopic">{{ subtopic.icon }} {{ subtopic.name }}</div>
+      <div class="daily-diff">{{ diff_config.label }} {{ difficulty }}×{{ difficulty }}</div>
+      <p class="daily-desc">{{ subtopic.desc }}</p>
+      <button class="btn btn-primary btn-large" onclick="startDaily()">开始挑战</button>
+    </div>
+  </div>
+</div>
+<script>
+function startDaily(){
+  sessionStorage.setItem('daily_theme_id','{{ theme.id }}');
+  sessionStorage.setItem('daily_subtopic_id','{{ subtopic.id }}');
+  sessionStorage.setItem('daily_difficulty','{{ difficulty }}');
+  window.location.href=URLS.game+'?daily=1';
+}
+</script>
+{% endblock %}

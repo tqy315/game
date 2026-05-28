@@ -1,0 +1,29 @@
+{% extends 'mainsite/base.html' %}
+{% block title %}历史记录 - 国风华容道{% endblock %}
+{% block content %}
+<div id="history-screen" class="screen active">
+  <div class="page-header">
+    <a href="{% url 'menu' %}" class="back-btn">← 返回菜单</a>
+    <h1>📋 历史记录</h1>
+  </div>
+  <div class="history-summary">
+    <div class="summary-card"><span class="summary-num">{{ total }}</span><span class="summary-label">总完成</span></div>
+    <div class="summary-card"><span class="summary-num">{{ total_3 }}</span><span class="summary-label">3×3 关卡</span></div>
+    <div class="summary-card"><span class="summary-num">{{ total_4 }}</span><span class="summary-label">4×4 关卡</span></div>
+  </div>
+  <div class="records-list">
+    {% for r in records %}
+    <div class="record-card">
+      <canvas class="record-thumb" data-theme="{{ r.theme_id }}" width="60" height="60"></canvas>
+      <div class="record-info">
+        <div class="record-title">{{ r.subtopic_name }} <span class="diff-tag">{{ r.difficulty }}×{{ r.difficulty }}</span></div>
+        <div class="record-meta">用时 {{ r.time_spent }}秒 | {{ r.moves }}步 | {{ r.score }}分</div>
+        <div class="record-date">{{ r.completed_at|date:"Y-m-d H:i" }}</div>
+      </div>
+    </div>
+    {% empty %}
+    <p class="empty-msg">还没有完成记录，开始你的第一次挑战吧！</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

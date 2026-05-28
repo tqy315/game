@@ -1,0 +1,26 @@
+{% extends 'mainsite/base.html' %}
+{% block title %}完成 - 国风华容道{% endblock %}
+{% block content %}
+<div id="complete-screen" class="screen active">
+  <div class="complete-card">
+    <div class="complete-header">
+      <span class="trophy">🏆</span>
+      <h1>恭喜通关！</h1>
+    </div>
+    <div class="complete-stats" id="complete-stats">
+      <div class="stat-row"><span>主题</span><span id="cs-theme">-</span></div>
+      <div class="stat-row"><span>关卡</span><span id="cs-subtopic">-</span></div>
+      <div class="stat-row"><span>难度</span><span id="cs-diff">-</span></div>
+      <div class="stat-row"><span>用时</span><span id="cs-time">-</span></div>
+      <div class="stat-row"><span>步数</span><span id="cs-moves">-</span></div>
+      <div class="stat-row"><span>提示</span><span id="cs-hints">-</span></div>
+      <div class="stat-row highlight"><span>得分</span><span id="cs-score">-</span></div>
+    </div>
+    <div id="new-badges" class="new-badges"></div>
+    <div class="complete-btns">
+      <button class="btn btn-primary btn-large" onclick="window.location.href=URLS.game">再玩一次</button>
+      <button class="btn btn-gold" onclick="window.location.href=URLS.menu">返回菜单</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

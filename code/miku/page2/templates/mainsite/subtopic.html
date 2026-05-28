@@ -1,0 +1,29 @@
+{% extends 'mainsite/base.html' %}
+{% block title %}{{ theme.name }} - 国风华容道{% endblock %}
+{% block content %}
+<div id="subtopic-screen" class="screen active">
+  <div class="subtopic-header">
+    <a href="{% url 'menu' %}" class="back-btn">← 返回</a>
+    <h1>{{ theme.icon }} {{ theme.name }}</h1>
+    <p>{{ theme.shortDesc }}</p>
+  </div>
+  <div class="subtopic-grid">
+    {% for st in theme.subTopics %}
+    <div class="st-card {% if st.id in completed_ids %}completed{% endif %}"
+         onclick="startGame('{{ theme.id }}','{{ st.id }}')">
+      <div class="st-icon">{{ st.icon }}</div>
+      <div class="st-name">{{ st.name }}</div>
+      <div class="st-desc">{{ st.desc }}</div>
+      {% if st.id in completed_ids %}<span class="done-tag">✓ 已完成</span>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<script>
+function startGame(tid,sid){
+  sessionStorage.setItem('theme_id',tid);
+  sessionStorage.setItem('subtopic_id',sid);
+  window.location.href=URLS.game;
+}
+</script>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'mainsite/base.html' %}
+{% block title %}游戏 - 国风华容道{% endblock %}
+{% block content %}
+<div id="game-screen" class="screen active">
+  <div class="game-header">
+    <a href="{% url 'menu' %}" class="back-btn" id="btn-quit">← 退出</a>
+    <span class="game-title">{{ theme.icon }} {{ subtopic.name }} <span class="diff-tag">({{ diff_config.label }} {{ difficulty }}×{{ difficulty }})</span></span>
+    <span id="game-hint-count" style="display:none">提示: <b id="hint-num">3</b></span>
+  </div>
+
+  <div class="game-layout">
+    <div class="game-board-area">
+      <div class="board-wrapper">
+        <canvas id="preview-canvas" width="80" height="80" style="display:none"></canvas>
+        <div id="puzzle-board" class="puzzle-board size-{{ difficulty }}"></div>
+      </div>
+      <div class="game-controls">
+        <button class="btn btn-outline btn-small" id="btn-undo" title="撤销 (U)">↩ 撤销</button>
+        <button class="btn btn-outline btn-small" id="btn-hint" title="提示 (H)">💡 提示</button>
+        <button class="btn btn-outline btn-small" id="btn-pause" title="暂停">⏸ 暂停</button>
+        <button class="btn btn-outline btn-small" id="btn-shuffle">🔀 打乱</button>
+      </div>
+      <div id="hint-overlay" class="hint-overlay" style="display:none">← 移动 <b id="hint-tile-num"></b></div>
+    </div>
+
+    <div class="game-info">
+      <div class="info-card"><span class="info-label">⏱ 用时</span><span class="info-value" id="timer-display">00:00</span></div>
+      <div class="info-card"><span class="info-label">👆 步数</span><span class="info-value" id="moves-display">0</span></div>
+      <div class="info-card"><span class="info-label">💡 提示</span><span class="info-value" id="hints-display">0 / 3</span></div>
+      <div class="info-card"><span class="info-label">⭐ 预计得分</span><span class="info-value" id="score-display">{{ diff_config.basePoints }}</span></div>
+      <div class="move-history" id="move-history"></div>
+    </div>
+  </div>
+
+  <div id="pause-overlay" class="pause-overlay" style="display:none">
+    <div class="pause-card">
+      <h2>游戏暂停</h2>
+      <button class="btn btn-primary btn-large" id="btn-resume">▶ 继续游戏</button>
+      <button class="btn btn-outline" id="btn-restart">🔄 重新开始</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var GAME_THEME_ID='{{ theme.id }}';
+var GAME_THEME_NAME='{{ theme.name }}';
+var GAME_SUBTOPIC_ID='{{ subtopic.id }}';
+var GAME_SUBTOPIC_NAME='{{ subtopic.name }}';
+var GAME_DIFFICULTY={{ difficulty }};
+var GAME_DIFF_CONFIG={{ diff_config|safe }};
+</script>
+{% endblock %}
