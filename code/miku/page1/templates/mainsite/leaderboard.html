@@ -1,0 +1,25 @@
+{% extends 'mainsite/base.html' %}{% load static %}
+{% block title %}排行榜 - 国风华容道{% endblock %}
+{% block content %}
+<div id="leaderboard-screen" class="screen active">
+  <header class="top-bar"><a href="{% url 'menu' %}" class="btn btn-outline btn-sm">← 返回菜单</a><h2>🏆 排行榜</h2><div></div></header>
+  <main class="leaderboard-content">
+    <div class="my-rank-card">
+      <span class="rank-label">我的排名</span>
+      <span class="rank-num">#{{ my_rank }}</span>
+      <span class="rank-points">{{ my_profile.total_points }} 积分</span>
+    </div>
+    <div class="leaderboard-list">
+      {% for p in top_players %}
+      <div class="lb-row{% if p.user_id == user.id %} is-me{% endif %}">
+        <span class="lb-rank">{% if forloop.counter == 1 %}🥇{% elif forloop.counter == 2 %}🥈{% elif forloop.counter == 3 %}🥉{% else %}#{{ forloop.counter }}{% endif %}</span>
+        {% if p.avatar_data %}<img class="lb-avatar" src="{{ p.avatar_data }}" alt="头像">{% else %}<span class="lb-avatar-placeholder">🧩</span>{% endif %}
+        <span class="lb-name">{{ p.nickname|default:p.user.username }}</span>
+        <span class="lb-points">{{ p.total_points }} 分</span>
+        <span class="lb-games">{{ p.total_games }} 场</span>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+</div>
+{% endblock %}

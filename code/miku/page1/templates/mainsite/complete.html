@@ -1,0 +1,16 @@
+{% extends 'mainsite/base.html' %}{% load static %}
+{% block title %}恭喜通关 - 国风华容道{% endblock %}
+{% block content %}
+<div id="complete-screen" class="screen active">
+  <div class="complete-card">
+    <div class="complete-header"><div class="trophy">🏆</div><h2>恭喜通关！</h2><p class="complete-theme-name" id="complete-theme-name"></p></div>
+    <div class="complete-stats" id="complete-stats"></div>
+    <div class="complete-culture"><h3>文化介绍</h3><div class="culture-content" id="culture-content"></div></div>
+    <div class="complete-badges" id="complete-badges" style="display:none;"><h3>🎖️ 新获得成就</h3><div id="new-badges-list"></div></div>
+    <div class="complete-actions">
+      <button class="btn btn-primary" id="btn-next-level">下一关</button>
+      <a href="{% url 'menu' %}" class="btn btn-outline">返回菜单</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

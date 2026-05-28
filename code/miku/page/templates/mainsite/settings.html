@@ -1,0 +1,46 @@
+{% extends 'mainsite/base.html' %}
+{% load static %}
+
+{% block title %}设置 - 国风华容道{% endblock %}
+
+{% block content %}
+<div id="settings-screen" class="screen active">
+  <header class="top-bar">
+    <a href="{% url 'menu' %}" class="btn btn-outline btn-sm">← 返回菜单</a>
+    <h2>设置</h2>
+    <div></div>
+  </header>
+  <main class="settings-content">
+    <div class="settings-card">
+      <div class="setting-row">
+        <span>音效</span>
+        <label class="toggle">
+          <input type="checkbox" id="setting-sound" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="setting-row">
+        <span>动画效果</span>
+        <label class="toggle">
+          <input type="checkbox" id="setting-animation" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="setting-row">
+        <span>高亮提示移动</span>
+        <label class="toggle">
+          <input type="checkbox" id="setting-highlight-hint" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+    <div class="settings-card">
+      <h3>关于</h3>
+      <p>国风华容道 · 中华传统文化拼图 v2.0</p>
+      <p>通过滑动拼图游戏，领略中华优秀传统文化的魅力。</p>
+      <p>提示系统基于广度优先搜索（BFS）算法。</p>
+      <p>七大文化主题、七十七个关卡等你来探索。</p>
+    </div>
+  </main>
+</div>
+{% endblock %}

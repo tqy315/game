@@ -1,0 +1,82 @@
+{% extends 'mainsite/base.html' %}
+{% load static %}
+
+{% block title %}主菜单 - 国风华容道{% endblock %}
+
+{% block content %}
+<div id="menu-screen" class="screen active">
+  <header class="top-bar">
+    <div class="user-badge" id="user-badge-menu">
+      <a href="{% url 'profile' %}" class="user-link">
+        <span class="avatar">🧩</span>
+        <span class="nick">{{ profile.nickname|default:user.username }}</span>
+      </a>
+      <span class="points-display">积分: <strong>{{ total_points }}</strong></span>
+    </div>
+    <nav class="top-nav">
+      <a href="{% url 'history' %}" class="btn btn-text">📋 历史记录</a>
+      <a href="{% url 'settings' %}" class="btn btn-text">⚙️ 设置</a>
+      <a href="{% url 'logout' %}" class="btn btn-text">退出</a>
+    </nav>
+  </header>
+
+  <main class="menu-content">
+    <div class="menu-main-row">
+      <section class="section-theme">
+        <h2>选择文化主题</h2>
+        <div class="theme-grid" id="theme-grid"></div>
+      </section>
+
+      <div class="section-side">
+        <section class="section-difficulty">
+          <h2>选择难度</h2>
+          <div class="difficulty-options" id="difficulty-options">
+            <label class="diff-card">
+              <input type="radio" name="difficulty" value="3" checked>
+              <div class="diff-inner">
+                <span class="diff-icon">🧩</span>
+                <span class="diff-info">
+                  <span class="diff-size">3 × 3</span>
+                  <span class="diff-label">入门级 · 九宫格</span>
+                </span>
+              </div>
+            </label>
+            <label class="diff-card">
+              <input type="radio" name="difficulty" value="4">
+              <div class="diff-inner">
+                <span class="diff-icon">🧩</span>
+                <span class="diff-info">
+                  <span class="diff-size">4 × 4</span>
+                  <span class="diff-label">进阶级 · 十六格</span>
+                </span>
+              </div>
+            </label>
+          </div>
+        </section>
+        <div class="start-area">
+          <button id="btn-start" class="btn btn-primary btn-large">开始挑战</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="section-rewards">
+      <h2>成就徽章</h2>
+      <div class="rewards-row" id="rewards-row"></div>
+    </section>
+  </main>
+</div>
+
+<!-- 隐藏的提示弹出层 -->
+<div class="hint-overlay" id="hint-overlay" style="display:none;">
+  <div class="hint-box"><p id="hint-text"></p></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% csrf_token %}
+<script>
+  const EARNED_REWARD_IDS = {{ earned_reward_ids|safe }};
+  const USER_TOTAL_POINTS = {{ total_points }};
+  const CSRF_TOKEN = document.querySelector('[name=csrfmiddlewaretoken]').value;
+</script>
+{% endblock %}

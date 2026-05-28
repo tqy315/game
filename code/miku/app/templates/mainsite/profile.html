@@ -1,0 +1,64 @@
+{% extends 'mainsite/base.html' %}
+{% load static %}
+
+{% block title %}个人信息 - 国风华容道{% endblock %}
+
+{% block content %}
+<div id="profile-screen" class="screen active">
+  <header class="top-bar">
+    <a href="{% url 'menu' %}" class="btn btn-outline btn-sm">← 返回菜单</a>
+    <h2>个人信息</h2>
+    <div></div>
+  </header>
+  <main class="profile-content">
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="profile-avatar">🧩</div>
+        <div class="profile-basic">
+          <h3>{{ profile.nickname|default:user.username }}</h3>
+          <p class="profile-username">@{{ user.username }}</p>
+          <p class="profile-date">注册时间：{{ user.date_joined|date:"Y年m月d日" }}</p>
+        </div>
+      </div>
+
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <span class="stat-num">{{ total_points }}</span>
+          <span class="stat-label">总积分</span>
+        </div>
+        <div class="profile-stat">
+          <span class="stat-num">{{ total_completed }}</span>
+          <span class="stat-label">已通关</span>
+        </div>
+        <div class="profile-stat">
+          <span class="stat-num">{{ earned_rewards.count }}</span>
+          <span class="stat-label">已获徽章</span>
+        </div>
+      </div>
+
+      <div class="profile-edit">
+        <h4>编辑资料</h4>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          <div class="input-group">
+            <label for="{{ form.nickname.id_for_label }}">昵称</label>
+            {{ form.nickname }}
+          </div>
+          <button type="submit" class="btn btn-primary">保存修改</button>
+        </form>
+      </div>
+
+      {% if earned_rewards %}
+      <div class="profile-rewards">
+        <h4>已获得徽章</h4>
+        <div class="earned-grid">
+          {% for e in earned_rewards %}
+          <span class="earned-badge">{{ e.reward_name }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </main>
+</div>
+{% endblock %}

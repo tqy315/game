@@ -1,0 +1,17 @@
+{% extends 'mainsite/base.html' %}
+{% load static %}
+
+{% block title %}选择关卡 - 国风华容道{% endblock %}
+
+{% block content %}
+<div id="subtopic-screen" class="screen active">
+  <header class="top-bar">
+    <a href="{% url 'menu' %}" class="btn btn-outline btn-sm">← 返回主题</a>
+    <h2 class="subtopic-theme-name" id="subtopic-theme-name"></h2>
+    <div class="subtopic-progress" id="subtopic-progress"></div>
+  </header>
+  <main class="subtopic-content">
+    <div class="subtopic-grid" id="subtopic-grid"></div>
+  </main>
+</div>
+{% endblock %}

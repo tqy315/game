@@ -1,0 +1,29 @@
+{% extends 'mainsite/base.html' %}{% load static %}
+{% block title %}每日挑战 - 国风华容道{% endblock %}
+{% block content %}
+<div id="daily-screen" class="screen active">
+  <header class="top-bar"><a href="{% url 'menu' %}" class="btn btn-outline btn-sm">← 返回菜单</a><h2>📅 每日挑战</h2><div></div></header>
+  <main class="daily-content">
+    <div class="daily-card">
+      <div class="daily-date">{{ today|date:"Y年m月d日" }} 每日挑战</div>
+      <div class="daily-theme">{{ theme.icon }} {{ theme.name }}</div>
+      <div class="daily-subtopic">{{ subtopic.icon }} {{ subtopic.name }}</div>
+      <p class="daily-desc">{{ subtopic.desc }}</p>
+      <div class="daily-diff">{{ difficulty }}×{{ difficulty }} · {% if difficulty == 3 %}入门级九宫格{% else %}进阶级十六格{% endif %}</div>
+      <button class="btn btn-primary btn-large" id="btn-start-daily">开始挑战</button>
+    </div>
+  </main>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.getElementById('btn-start-daily').addEventListener('click', function() {
+  sessionStorage.setItem('guofeng_state', JSON.stringify({
+    currentTheme: { id: '{{ theme.id }}', name: '{{ theme.name|escapejs }}', icon: '{{ theme.icon }}', subTopics: [{% for s in theme.subTopics %}{id:'{{ s.id }}',name:'{{ s.name|escapejs }}',icon:'{{ s.icon }}',desc:'{{ s.desc|escapejs }}'},{% endfor %}] },
+    currentSubtopic: { id: '{{ subtopic.id }}', name: '{{ subtopic.name|escapejs }}', icon: '{{ subtopic.icon }}', desc: '{{ subtopic.desc|escapejs }}' },
+    currentDifficulty: {{ difficulty }}
+  }));
+  window.location.href = URLS.game;
+});
+</script>
+{% endblock %}

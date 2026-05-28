@@ -1,0 +1,35 @@
+{% extends 'mainsite/base.html' %}{% load static %}
+{% block title %}拼图挑战 - 国风华容道{% endblock %}
+{% block content %}
+<div id="game-screen" class="screen active">
+  <div class="game-layout">
+    <div class="game-board-area">
+      <div class="board-header">
+        <a href="{% url 'subtopic' %}" class="btn btn-outline btn-sm">← 返回</a>
+        <span class="board-theme-name" id="game-theme-name"></span>
+        <span class="board-diff" id="game-diff"></span>
+      </div>
+      <div class="board-wrapper"><div class="puzzle-board" id="puzzle-board"></div></div>
+      <div class="board-controls">
+        <button class="btn btn-outline" id="btn-undo">↩ 撤销</button>
+        <button class="btn btn-outline" id="btn-hint">💡 提示</button>
+        <button class="btn btn-outline" id="btn-pause">⏯️ 暂停</button>
+        <button class="btn btn-outline" id="btn-shuffle">🔀 重排</button>
+        <button class="btn btn-outline" id="btn-show-preview">🖼️ 原图</button>
+      </div>
+    </div>
+    <div class="game-info-area">
+      <div class="info-card">
+        <div class="info-row"><span class="info-label">⏱️ 用时</span><span class="info-value" id="game-timer">00:00</span></div>
+        <div class="info-row"><span class="info-label">👆 步数</span><span class="info-value" id="game-moves">0</span></div>
+        <div class="info-row"><span class="info-label">💡 提示</span><span class="info-value" id="game-hints-used">0</span></div>
+        <div class="info-row"><span class="info-label">📊 预计得分</span><span class="info-value" id="game-score-estimate">—</span></div>
+      </div>
+      <div class="preview-mini" id="preview-mini"><p class="preview-label">目标图案</p><canvas id="preview-canvas" width="150" height="150"></canvas></div>
+      <div class="move-history"><p class="move-label">操作记录</p><div class="move-list" id="move-list"></div></div>
+    </div>
+  </div>
+  <div class="hint-overlay" id="hint-overlay" style="display:none;"><div class="hint-box"><p id="hint-text"></p></div></div>
+  <div class="pause-overlay" id="pause-overlay" style="display:none;"><div class="pause-box"><p>游戏暂停中</p><button class="btn btn-primary" id="btn-resume">继续游戏</button></div></div>
+</div>
+{% endblock %}
