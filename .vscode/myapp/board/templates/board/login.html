@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* ========== 全局与背景 ========== */
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f2e8;
+            background-image:
+                radial-gradient(ellipse 380px 200px at 18% 72%, rgba(140, 120, 100, 0.28) 0%, rgba(140, 120, 100, 0.08) 55%, transparent 72%),
+                radial-gradient(ellipse 320px 170px at 78% 68%, rgba(130, 110, 90, 0.25) 0%, rgba(130, 110, 90, 0.06) 50%, transparent 70%),
+                radial-gradient(ellipse 220px 120px at 50% 76%, rgba(150, 130, 110, 0.20) 0%, rgba(150, 130, 110, 0.04) 45%, transparent 68%),
+                radial-gradient(ellipse 340px 160px at 10% 85%, rgba(120, 100, 80, 0.22) 0%, rgba(120, 100, 80, 0.05) 50%, transparent 75%),
+                radial-gradient(ellipse 280px 140px at 88% 82%, rgba(135, 115, 95, 0.20) 0%, rgba(135, 115, 95, 0.04) 48%, transparent 72%),
+                radial-gradient(ellipse 600px 180px at 50% 92%, rgba(145, 125, 105, 0.18) 0%, rgba(145, 125, 105, 0.03) 55%, transparent 78%);
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+            position: relative;
+        }
+
+        /* 传统方格暗纹 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.045;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 14px, rgba(160, 130, 100, 0.8) 14px, rgba(160, 130, 100, 0.8) 15px),
+                repeating-linear-gradient(90deg, transparent, transparent 14px, rgba(160, 130, 100, 0.8) 14px, rgba(160, 130, 100, 0.8) 15px);
+            background-size: 15px 15px;
+        }
+
+        /* 云纹装饰 */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -30px;
+            left: -20px;
+            width: 200px;
+            height: 200px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.10;
+            background:
+                radial-gradient(circle 40px at 50px 60px, #c9a96e 0%, transparent 70%),
+                radial-gradient(circle 30px at 90px 40px, #c9a96e 0%, transparent 65%),
+                radial-gradient(circle 35px at 130px 65px, #c9a96e 0%, transparent 68%),
+                radial-gradient(circle 25px at 70px 85px, #c9a96e 0%, transparent 60%),
+                radial-gradient(circle 45px at 100px 95px, #c9a96e 0%, transparent 72%);
+            border-radius: 50%;
+        }
+
+        /* 登录卡片（样式与注册卡片一致） */
+        .login-card {
+            max-width: 450px;
+            margin: 60px auto;
+            padding: 36px 32px 30px;
+            background: linear-gradient(180deg, #fffef9 0%, #fefdf8 30%, #fdfbf4 100%);
+            border-radius: 10px;
+            border: 1px solid #e5d9c6;
+            border-top: 5px solid #b5343a;
+            box-shadow: 0 2px 6px rgba(140, 110, 70, 0.10), 0 8px 28px rgba(120, 90, 50, 0.12), 0 20px 50px rgba(100, 70, 40, 0.08);
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-card::before,
+        .login-card::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            width: 28px;
+            height: 28px;
+            pointer-events: none;
+            border-top: 3px solid #c9a96e;
+            opacity: 0.7;
+        }
+        .login-card::before {
+            left: -1px;
+            border-left: 3px solid #c9a96e;
+            border-radius: 4px 0 0 0;
+        }
+        .login-card::after {
+            right: -1px;
+            border-right: 3px solid #c9a96e;
+            border-radius: 0 4px 0 0;
+        }
+
+        .card-inner-corners {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .card-inner-corners::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -1px;
+            width: 28px;
+            height: 28px;
+            border-left: 3px solid #c9a96e;
+            border-bottom: 3px solid #c9a96e;
+            border-radius: 0 0 0 4px;
+            opacity: 0.7;
+        }
+        .card-inner-corners::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: -1px;
+            width: 28px;
+            height: 28px;
+            border-right: 3px solid #c9a96e;
+            border-bottom: 3px solid #c9a96e;
+            border-radius: 0 0 4px 0;
+            opacity: 0.7;
+        }
+
+        /* 印章 (文字改为“登录”) */
+        .seal-stamp {
+            position: absolute;
+            top: -8px;
+            right: 28px;
+            width: 62px;
+            height: 62px;
+            background: #b5343a;
+            border: 2.5px solid #7a1f25;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(-14deg);
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.20), 1px 2px 6px rgba(120,60,40,0.35);
+            z-index: 3;
+            pointer-events: none;
+        }
+        .seal-stamp .seal-text {
+            writing-mode: vertical-rl;
+            color: #fef5e7;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-family: "STSong", "Songti SC", "SimSun", "KaiTi", serif;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+        }
+
+        /* 标题样式 */
+        .login-card h3 {
+            font-family: "STSong", "Songti SC", "Noto Serif SC", "SimSun", serif;
+            color: #3c2415;
+            letter-spacing: 3px;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+        }
+        .login-card h3::after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 2.5px;
+            background: linear-gradient(to right, transparent 0%, #c9a96e 15%, #b5343a 50%, #c9a96e 85%, transparent 100%);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .form-label {
+            color: #4a3525;
+            font-weight: 500;
+            font-size: 0.93rem;
+        }
+        .form-control {
+            background-color: #fefdf9;
+            border: 1.5px solid #d9ccb6;
+            border-radius: 8px;
+            color: #3c2415;
+            padding: 10px 14px;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #b5343a;
+            box-shadow: 0 0 0 0.2rem rgba(181,52,58,0.18), inset 0 1px 3px rgba(0,0,0,0.04);
+            background-color: #fffefb;
+        }
+        .btn-primary {
+            background: linear-gradient(180deg, #c94043 0%, #b5343a 40%, #9e1f28 100%);
+            border: 1.5px solid #7a1f25;
+            border-radius: 8px;
+            color: #fef5e7;
+            font-weight: 600;
+            letter-spacing: 2px;
+            padding: 11px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(160,50,40,0.30), 0 1px 3px rgba(0,0,0,0.10);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(180deg, #d44549 0%, #c13a40 40%, #a8252f 100%);
+            transform: translateY(-1px);
+        }
+        @media (max-width: 500px) {
+            .login-card { margin: 30px 16px; padding: 28px 20px 24px; }
+            .seal-stamp { width: 48px; height: 48px; top: -6px; right: 16px; }
+            .seal-stamp .seal-text { font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="seal-stamp">
+            <span class="seal-text">登录</span>
+        </div>
+        <div class="card-inner-corners"></div>
+        <h3 class="text-center mb-4">欢迎登录</h3>
+
+        <!-- 错误消息显示 -->
+        {% if error %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ error }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">用户名</label>
+                <input type="text" name="username" id="username" class="form-control" placeholder="请输入用户名" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">密码</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="请输入密码" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">登 录</button>
+        </form>
+        <p class="text-center text-muted mt-3" style="font-size:0.9rem;">
+            还没有账号？<a href="{% url 'register' %}">立即注册</a>
+        </p>
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
