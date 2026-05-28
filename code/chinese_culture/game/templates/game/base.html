@@ -36,6 +36,7 @@
                                 <div class="dropdown-points">⭐ {{ user.profile.points }} 积分</div>
                             </div>
                         </div>
+                        <a href="{% url 'achievements' %}" class="dropdown-item">🏆 成就殿堂</a>
                         <a href="{% url 'history' %}" class="dropdown-item">📋 历史记录</a>
                         <a href="{% url 'settings' %}" class="dropdown-item">⚙️ 设置</a>
                         <a href="{% url 'logout' %}" class="dropdown-item logout">🚪 退出登录</a>

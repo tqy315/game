@@ -56,6 +56,9 @@
     let gameStarted = false;
     let pointsEarned = 0;
     let saveInProgress = false;
+    let hasImageData = false;
+    let imageUrls = [];
+    let imageRefUrl = '';
 
     // ---- DOM Elements ----
     const board = document.getElementById('puzzleBoard');
@@ -100,6 +103,20 @@
         gameStarted = false;
         pointsEarned = 0;
         saveInProgress = false;
+
+        // Detect image data for current difficulty
+        const imgData = PUZZLE.imageData && PUZZLE.imageData[String(size)];
+        if (imgData && imgData.urls && imgData.urls.length >= size * size) {
+            hasImageData = true;
+            imageUrls = imgData.urls;
+            imageRefUrl = imgData.referenceUrl || '';
+        } else {
+            hasImageData = false;
+            imageUrls = [];
+            imageRefUrl = '';
+        }
+
+        updateTargetImage();
         updateStats();
         renderBoard();
         stopTimer();
@@ -107,9 +124,23 @@
         winMessage.classList.add('hidden');
     }
 
+    function updateTargetImage() {
+        const targetImg = document.getElementById('targetImage');
+        const targetLabel = document.getElementById('targetLabel');
+        if (!targetImg || !targetLabel) return;
+
+        if (hasImageData && imageRefUrl) {
+            targetImg.src = imageRefUrl;
+            targetImg.style.display = 'block';
+        } else {
+            targetImg.style.display = 'none';
+        }
+    }
+
     function renderBoard() {
         board.innerHTML = '';
         board.className = 'puzzle-board size-' + currentSize;
+        if (hasImageData) board.classList.add('image-mode');
 
         const colors = currentSize === 3 ? TILE_COLORS_3 : TILE_COLORS_4;
         const N = engine.N;
@@ -125,6 +156,13 @@
             const val = engine.state[i];
             if (val === 0) {
                 tile.classList.add('empty');
+            } else if (hasImageData) {
+                tile.classList.add('image-tile');
+                tile.style.backgroundImage = `url(${imageUrls[val - 1]})`;
+                tile.style.backgroundSize = '100% 100%';
+                tile.style.backgroundPosition = 'center';
+                tile.style.backgroundRepeat = 'no-repeat';
+                tile.addEventListener('click', () => onTileClick(i));
             } else {
                 tile.textContent = val;
                 tile.style.background = colors[val - 1] || '#555';
@@ -243,22 +281,43 @@
     }
 
     // ---- Button Handlers ----
+    let hintPending = false;
+
     function onHint() {
         if (!engine || !gameStarted) return;
         if (engine.isSolved()) return;
+        if (hintPending) return;
 
-        const hintIdx = engine.getHint();
-        if (hintIdx === null || hintIdx === undefined) return;
+        hintPending = true;
+        const body = JSON.stringify({
+            state: Array.from(engine.state),
+            size: currentSize,
+        });
 
-        hintCount++;
-        updateStats();
+        fetch(PUZZLE.hintUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': PUZZLE.csrfToken,
+            },
+            body: body,
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.ok && data.hint_index !== undefined) {
+                hintCount++;
+                updateStats();
 
-        const tiles = board.querySelectorAll('.tile');
-        const targetTile = tiles[hintIdx];
-        if (targetTile && !targetTile.classList.contains('empty')) {
-            targetTile.classList.add('hint-highlight');
-            setTimeout(() => targetTile.classList.remove('hint-highlight'), 1500);
-        }
+                const tiles = board.querySelectorAll('.tile');
+                const targetTile = tiles[data.hint_index];
+                if (targetTile && !targetTile.classList.contains('empty')) {
+                    targetTile.classList.add('hint-highlight');
+                    setTimeout(() => targetTile.classList.remove('hint-highlight'), 1500);
+                }
+            }
+        })
+        .catch(() => {})
+        .finally(() => { hintPending = false; });
     }
 
     function onShuffle() {
@@ -292,6 +351,17 @@
     function onDifficultyChange(size) {
         stopTimer();
         initPuzzle(size);
+
+        // Switch target image for the new difficulty
+        const targetImg = document.getElementById('targetImage');
+        if (targetImg && hasImageData) {
+            const imgData = PUZZLE.imageData && PUZZLE.imageData[String(size)];
+            if (imgData && imgData.referenceUrl) {
+                targetImg.src = imgData.referenceUrl;
+                targetImg.style.display = 'block';
+            }
+        }
+
         diffBtns.forEach(b => {
             b.classList.toggle('active', parseInt(b.dataset.size) === size);
         });

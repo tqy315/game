@@ -19,7 +19,7 @@
         <a href="{% url 'theme_detail' theme.id %}" class="theme-card" style="background: {{ theme.bg_gradient }};">
             <div class="theme-card-icon">{{ theme.icon }}</div>
             <div class="theme-card-info">
-                <h3 class="theme-card-name" style="color: {{ theme.color }};">{{ theme.name }}</h3>
+                <h3 class="theme-card-name">{{ theme.name }}</h3>
                 <p class="theme-card-count">{{ theme.items|length }} 个关卡</p>
                 <p class="theme-card-desc">{{ theme.description }}</p>
             </div>

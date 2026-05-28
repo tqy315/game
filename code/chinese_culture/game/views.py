@@ -1,4 +1,6 @@
 import json
+import os
+from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
@@ -7,8 +9,9 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from urllib.parse import quote
 from .data import THEMES
-from .models import GameRecord, UserProfile
+from .models import GameRecord, UserProfile, CulturalKnowledge
 
 POINTS_PER_PUZZLE = {
     '3': 100,
@@ -50,6 +53,41 @@ def puzzle(request, theme_id, item_index):
     item = theme['items'][idx]
     total_items = len(theme['items'])
 
+    # Fetch cultural knowledge from database
+    try:
+        knowledge = CulturalKnowledge.objects.get(theme_name=theme['name'], item_name=item['name'])
+        culture_title = knowledge.title
+        culture_content = knowledge.content
+    except CulturalKnowledge.DoesNotExist:
+        culture_title = item['name']
+        culture_content = item['desc']
+
+    # Detect puzzle images
+    image_data = {}
+    static_base = os.path.join(settings.BASE_DIR, 'game', 'static', 'game', 'puzzle_images')
+
+    for diff_label, diff_folder in [('3', '3×3'), ('4', '4×4')]:
+        img_dir = os.path.join(static_base, diff_folder, theme['name'], item['name'])
+        if os.path.isdir(img_dir):
+            pieces = sorted([
+                f for f in os.listdir(img_dir)
+                if f.endswith('.jpg') and f.split('.')[0].isdigit()
+            ], key=lambda x: int(x.split('.')[0]))
+            expected = 9 if diff_label == '3' else 16
+            if len(pieces) >= expected:
+                url_prefix = f'/static/game/puzzle_images/{quote(diff_folder)}/{quote(theme["name"])}/{quote(item["name"])}'
+                # Check for reference image (.jpeg, .png, or .jpg)
+                ref_url = ''
+                for ext in ['.jpeg', '.png', '.jpg']:
+                    ref_name = f'{item["name"]}{ext}'
+                    if os.path.exists(os.path.join(img_dir, ref_name)):
+                        ref_url = f'{url_prefix}/{quote(ref_name)}'
+                        break
+                image_data[diff_label] = {
+                    'urls': [f'{url_prefix}/{p}' for p in pieces[:expected]],
+                    'reference_url': ref_url,
+                }
+
     return render(request, 'game/puzzle.html', {
         'theme': theme,
         'item': item,
@@ -57,6 +95,9 @@ def puzzle(request, theme_id, item_index):
         'total_items': total_items,
         'prev_index': idx - 1 if idx > 0 else None,
         'next_index': idx + 1 if idx < total_items - 1 else None,
+        'culture_title': culture_title,
+        'culture_content': culture_content,
+        'image_data': image_data,
     })
 
 
@@ -111,6 +152,62 @@ def logout_page(request):
     logout(request)
     messages.success(request, '已退出登录')
     return redirect('index')
+
+
+# ========== 成就 ==========
+
+@login_required
+def achievements_page(request):
+    records = request.user.game_records.all().order_by('theme_name', '-completed_at')
+
+    # Group records by theme
+    grouped = {}
+    for r in records:
+        if r.theme_name not in grouped:
+            grouped[r.theme_name] = {
+                'theme': None,
+                'records': [],
+            }
+        grouped[r.theme_name]['records'].append(r)
+
+    # Match themes and enrich records with cultural knowledge
+    theme_items_map = {}
+    for t in THEMES:
+        theme_items_map[t['name']] = {}
+        for item in t['items']:
+            theme_items_map[t['name']][item['name']] = item
+
+    for theme_name, group in grouped.items():
+        # Find matching theme from THEMES
+        for t in THEMES:
+            if t['name'] == theme_name:
+                group['theme'] = t
+                break
+
+        # Enrich each record with cultural knowledge
+        for r in group['records']:
+            try:
+                knowledge = CulturalKnowledge.objects.get(
+                    theme_name=theme_name, item_name=r.item_name
+                )
+                r.culture_title = knowledge.title
+                r.culture_content = knowledge.content
+            except CulturalKnowledge.DoesNotExist:
+                item_info = theme_items_map.get(theme_name, {}).get(r.item_name, {})
+                r.culture_title = item_info.get('name', r.item_name)
+                r.culture_content = item_info.get('desc', '')
+
+    # Sort groups by number of records (most completed first)
+    sorted_groups = sorted(
+        grouped.items(),
+        key=lambda x: len(x[1]['records']),
+        reverse=True,
+    )
+
+    return render(request, 'game/achievements.html', {
+        'grouped_achievements': sorted_groups,
+        'total_count': records.count(),
+    })
 
 
 # ========== 历史记录 ==========
@@ -217,4 +314,50 @@ def save_result(request):
         'ok': True,
         'points_earned': points_earned,
         'total_points': profile.points,
+    })
+
+
+@csrf_exempt
+@require_POST
+def get_hint_api(request):
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({'ok': False, 'error': '数据格式错误'})
+
+    state_1d = data.get('state', [])
+    size = int(data.get('size', 3))
+
+    if size not in (3, 4):
+        return JsonResponse({'ok': False, 'error': '无效的尺寸'})
+
+    # Convert 1D state to 2D board for klotski
+    board = []
+    for i in range(size):
+        row = []
+        for j in range(size):
+            row.append(int(state_1d[i * size + j]))
+        board.append(row)
+
+    # Call klotski A* solver
+    if size == 3:
+        from . import klotski3
+        hint_num = klotski3.get_hint(board)
+    else:
+        from . import klotski4
+        hint_num = klotski4.get_hint(board)
+
+    if hint_num is None:
+        return JsonResponse({'ok': False, 'error': '无法计算提示'})
+
+    # Find the index of hint_num in the 1D state
+    try:
+        hint_index = state_1d.index(hint_num)
+    except ValueError:
+        return JsonResponse({'ok': False, 'error': '提示数字不在状态中'})
+
+    return JsonResponse({
+        'ok': True,
+        'hint_num': hint_num,
+        'hint_index': hint_index,
     })

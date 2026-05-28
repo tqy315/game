@@ -12,9 +12,11 @@ urlpatterns = [
     path('logout/', views.logout_page, name='logout'),
 
     # User pages
+    path('achievements/', views.achievements_page, name='achievements'),
     path('history/', views.history_page, name='history'),
     path('settings/', views.settings_page, name='settings'),
 
     # API
     path('api/save-result/', views.save_result, name='save_result'),
+    path('api/get-hint/', views.get_hint_api, name='get_hint_api'),
 ]

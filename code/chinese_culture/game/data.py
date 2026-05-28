@@ -4,7 +4,7 @@ THEMES = [
         'name': '传统建筑',
         'icon': '🏯',
         'color': '#c41e3a',
-        'bg_gradient': 'linear-gradient(135deg, #2d1b1b, #4a2020)',
+        'bg_gradient': 'linear-gradient(135deg, #c47a5a, #b34d3a)',
         'description': '探索中华传统建筑的宏伟与精妙，感受千年营造智慧。',
         'items': [
             {'id': 'budala', 'name': '布达拉宫', 'desc': '西藏拉萨的宫堡式建筑群，藏传佛教圣地。'},
@@ -23,7 +23,7 @@ THEMES = [
         'name': '传统节日与民俗',
         'icon': '🏮',
         'color': '#e8481e',
-        'bg_gradient': 'linear-gradient(135deg, #2d1b0e, #4a2810)',
+        'bg_gradient': 'linear-gradient(135deg, #e08850, #c85d2c)',
         'description': '走进热闹的传统节日，体验丰富多彩的民俗文化。',
         'items': [
             {'id': 'chunjie', 'name': '春节', 'desc': '中华民族最隆重的传统佳节，辞旧迎新、阖家团圆。'},
@@ -42,7 +42,7 @@ THEMES = [
         'name': '传统艺术与戏曲',
         'icon': '🎭',
         'color': '#8b1e8b',
-        'bg_gradient': 'linear-gradient(135deg, #1b0e2d, #28104a)',
+        'bg_gradient': 'linear-gradient(135deg, #9b6db5, #7b4d9b)',
         'description': '领略中国传统艺术的精湛技艺，感受戏曲之美。',
         'items': [
             {'id': 'bianlian', 'name': '川剧变脸', 'desc': '四川川剧的绝技，瞬间变换脸谱令人惊叹。'},
@@ -63,7 +63,7 @@ THEMES = [
         'name': '非遗与传统工艺',
         'icon': '🏺',
         'color': '#1e7a8b',
-        'bg_gradient': 'linear-gradient(135deg, #0e1b2d, #10284a)',
+        'bg_gradient': 'linear-gradient(135deg, #5b8d9e, #3d6d80)',
         'description': '触摸千年传承的非遗技艺，感受匠人匠心之美。',
         'items': [
             {'id': 'cixiu', 'name': '刺绣', 'desc': '一针一线绣出锦绣河山，中国女红的极致。'},
@@ -81,7 +81,7 @@ THEMES = [
         'name': '神话传说与历史故事',
         'icon': '🐉',
         'color': '#c48a1e',
-        'bg_gradient': 'linear-gradient(135deg, #2d200e, #4a3510)',
+        'bg_gradient': 'linear-gradient(135deg, #c4a24e, #a08030)',
         'description': '走进古老的神话传说，聆听动人的历史故事。',
         'items': [
             {'id': 'change', 'name': '嫦娥奔月', 'desc': '嫦娥服下仙药飞向月宫，中秋佳节的美丽传说。'},
@@ -101,7 +101,7 @@ THEMES = [
         'name': '饮食与服饰文化',
         'icon': '👘',
         'color': '#3a8b1e',
-        'bg_gradient': 'linear-gradient(135deg, #0e2d1b, #104a28)',
+        'bg_gradient': 'linear-gradient(135deg, #6b9e5a, #4d7a3a)',
         'description': '品味中华美食的千滋百味，欣赏传统服饰的华美。',
         'items': [
             {'id': 'jiaozi', 'name': '饺子', 'desc': '春节必备美食，形似元宝、寓意团圆富贵。'},
@@ -125,11 +125,11 @@ THEMES = [
     },
     {
         'id': 'nature',
-        'name': '自然与风物文化',
+        'name': '自然与风景文化',
         'icon': '⛰️',
         'color': '#1e8b5a',
-        'bg_gradient': 'linear-gradient(135deg, #0e2d1e, #104a35)',
-        'description': '欣赏中华大地的壮美河山，品味雅致的风物文化。',
+        'bg_gradient': 'linear-gradient(135deg, #5a9e7b, #3d7a5b)',
+        'description': '欣赏中华大地的壮美河山，品味雅致的风景文化。',
         'items': [
             {'id': 'huangshan', 'name': '黄山', 'desc': '五岳归来不看山，黄山归来不看岳。'},
             {'id': 'guilin', 'name': '桂林山水', 'desc': '桂林山水甲天下，山青水秀洞奇石美。'},

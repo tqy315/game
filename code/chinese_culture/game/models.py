@@ -29,6 +29,21 @@ def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
 
+class CulturalKnowledge(models.Model):
+    theme_name = models.CharField(max_length=100, verbose_name='主题名称')
+    item_name = models.CharField(max_length=100, verbose_name='条目名称')
+    title = models.CharField(max_length=200, verbose_name='展示标题')
+    content = models.TextField(verbose_name='文化介绍')
+
+    class Meta:
+        unique_together = ['theme_name', 'item_name']
+        verbose_name = '文化知识'
+        verbose_name_plural = '文化知识'
+
+    def __str__(self):
+        return f'{self.theme_name} - {self.item_name}'
+
+
 class GameRecord(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='game_records', null=True, blank=True)
     theme_id = models.CharField(max_length=50)

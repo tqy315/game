@@ -1,16 +1,17 @@
 /* ===== 基础变量与重置 ===== */
 :root {
-    --bg-deep: #0a0a14;
-    --bg-surface: #141428;
-    --bg-card: #1a1a30;
-    --text-primary: #e8e0d0;
-    --text-secondary: #a09888;
-    --gold: #c8a96e;
-    --gold-light: #dfc28a;
-    --gold-dark: #a08040;
+    --bg-deep: #f2ede4;
+    --bg-surface: #e8e0d3;
+    --bg-card: #fdfaf5;
+    --text-primary: #3d3226;
+    --text-secondary: #8b7d6b;
+    --gold: #b8943e;
+    --gold-light: #d4af5e;
+    --gold-dark: #8b6914;
     --red: #c41e3a;
-    --red-light: #e8485e;
-    --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --red-light: #d9445a;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
     --radius: 12px;
     --radius-sm: 8px;
 }
@@ -24,6 +25,10 @@
 body {
     font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
     background: var(--bg-deep);
+    background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(180, 160, 130, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 60%, rgba(160, 180, 160, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 90%, rgba(180, 160, 140, 0.1) 0%, transparent 40%);
     color: var(--text-primary);
     min-height: 100vh;
     overflow-x: hidden;
@@ -47,16 +52,16 @@ a {
 
 .particle {
     position: absolute;
-    background: var(--gold);
+    background: var(--gold-light);
     border-radius: 50%;
-    opacity: 0.15;
-    animation: floatUp 8s linear infinite;
+    opacity: 0.12;
+    animation: floatUp 10s linear infinite;
 }
 
 @keyframes floatUp {
     0% { transform: translateY(100vh) scale(0); opacity: 0; }
-    10% { opacity: 0.15; }
-    90% { opacity: 0.05; }
+    10% { opacity: 0.12; }
+    90% { opacity: 0.04; }
     100% { transform: translateY(-10vh) scale(1); opacity: 0; }
 }
 
@@ -78,7 +83,7 @@ a {
     justify-content: space-between;
     align-items: center;
     padding: 16px 0;
-    border-bottom: 1px solid rgba(200, 169, 110, 0.15);
+    border-bottom: 1px solid rgba(139, 125, 107, 0.15);
     margin-bottom: 24px;
 }
 
@@ -88,7 +93,7 @@ a {
     gap: 10px;
     font-size: 22px;
     font-weight: bold;
-    color: var(--gold);
+    color: var(--gold-dark);
     transition: opacity 0.2s;
 }
 
@@ -107,8 +112,8 @@ a {
 }
 
 .nav-link:hover {
-    color: var(--gold);
-    background: rgba(200, 169, 110, 0.08);
+    color: var(--gold-dark);
+    background: rgba(139, 105, 20, 0.06);
 }
 
 .nav-link-register {
@@ -133,10 +138,10 @@ a {
     display: flex;
     align-items: center;
     gap: 4px;
-    background: rgba(200, 169, 110, 0.1);
+    background: rgba(184, 148, 62, 0.08);
     padding: 6px 14px;
     border-radius: 20px;
-    border: 1px solid rgba(200, 169, 110, 0.2);
+    border: 1px solid rgba(184, 148, 62, 0.15);
 }
 
 .points-icon { font-size: 14px; }
@@ -144,7 +149,7 @@ a {
 .points-value {
     font-size: 16px;
     font-weight: bold;
-    color: var(--gold);
+    color: var(--gold-dark);
 }
 
 .user-menu { position: relative; }
@@ -155,7 +160,7 @@ a {
     gap: 8px;
     padding: 6px 14px;
     background: var(--bg-card);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(139, 125, 107, 0.15);
     border-radius: 20px;
     cursor: pointer;
     color: var(--text-primary);
@@ -185,10 +190,10 @@ a {
     top: calc(100% + 8px);
     right: 0;
     width: 200px;
-    background: var(--bg-surface);
-    border: 1px solid rgba(200, 169, 110, 0.2);
+    background: var(--bg-card);
+    border: 1px solid rgba(184, 148, 62, 0.2);
     border-radius: var(--radius-sm);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--shadow-lg);
     display: none;
     z-index: 50;
     overflow: hidden;
@@ -201,7 +206,7 @@ a {
     align-items: center;
     gap: 12px;
     padding: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(139, 125, 107, 0.08);
 }
 
 .dropdown-avatar { font-size: 32px; }
@@ -213,7 +218,7 @@ a {
 
 .dropdown-points {
     font-size: 13px;
-    color: var(--gold);
+    color: var(--gold-dark);
     margin-top: 2px;
 }
 
@@ -225,11 +230,11 @@ a {
     transition: background 0.2s;
 }
 
-.dropdown-item:hover { background: rgba(200, 169, 110, 0.08); }
+.dropdown-item:hover { background: rgba(184, 148, 62, 0.06); }
 
 .dropdown-item.logout {
     color: var(--red-light);
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid rgba(139, 125, 107, 0.08);
 }
 
 /* ===== Toast 消息 ===== */
@@ -248,7 +253,7 @@ a {
     border-radius: var(--radius-sm);
     color: #fff;
     font-size: 14px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     animation: slideIn 0.3s ease;
     max-width: 360px;
 }
@@ -277,7 +282,7 @@ a {
     padding: 20px 0;
     color: var(--text-secondary);
     font-size: 13px;
-    border-top: 1px solid rgba(200, 169, 110, 0.1);
+    border-top: 1px solid rgba(139, 125, 107, 0.12);
 }
 
 /* ===== 英雄区域 ===== */
@@ -300,7 +305,7 @@ a {
 
 .hero-title {
     font-size: 42px;
-    background: linear-gradient(135deg, var(--gold-light), var(--red-light), var(--gold-light));
+    background: linear-gradient(135deg, var(--gold-dark), var(--red), var(--gold-dark));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -317,7 +322,7 @@ a {
 /* ===== 区块标题 ===== */
 .section-title {
     text-align: center;
-    color: var(--gold);
+    color: var(--gold-dark);
     font-size: 24px;
     padding: 16px 0 12px;
     letter-spacing: 2px;
@@ -346,11 +351,12 @@ a {
     gap: 16px;
     padding: 24px 20px;
     border-radius: var(--radius);
-    border: 1px solid rgba(200, 169, 110, 0.1);
+    border: 1px solid rgba(184, 148, 62, 0.12);
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    color: #fff;
 }
 
 .theme-card::before {
@@ -360,15 +366,15 @@ a {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(200, 169, 110, 0.03), transparent);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent);
     transition: opacity 0.3s;
     opacity: 0;
 }
 
 .theme-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(200, 169, 110, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: var(--shadow-lg);
 }
 
 .theme-card:hover::before { opacity: 1; }
@@ -381,7 +387,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: var(--radius-sm);
 }
 
@@ -395,28 +401,28 @@ a {
 
 .theme-card-count {
     font-size: 13px;
-    color: var(--gold);
     margin-bottom: 6px;
+    opacity: 0.85;
 }
 
 .theme-card-desc {
     font-size: 13px;
-    color: var(--text-secondary);
     line-height: 1.5;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    opacity: 0.8;
 }
 
 .theme-card-arrow {
     font-size: 24px;
-    color: var(--gold);
     opacity: 0;
     transition: all 0.3s;
+    color: #fff;
 }
 
-.theme-card:hover .theme-card-arrow { opacity: 0.6; }
+.theme-card:hover .theme-card-arrow { opacity: 0.7; }
 
 /* ===== 返回按钮 ===== */
 .back-btn {
@@ -429,15 +435,19 @@ a {
     transition: color 0.2s;
 }
 
-.back-btn:hover { color: var(--gold); }
+.back-btn:hover { color: var(--gold-dark); }
 
 /* ===== 主题头部 ===== */
 .theme-header {
     padding: 32px;
     border-radius: var(--radius);
     margin-bottom: 24px;
-    border: 1px solid rgba(200, 169, 110, 0.1);
+    border: 1px solid rgba(184, 148, 62, 0.1);
+    color: #fff;
 }
+
+.theme-header .back-btn { color: rgba(255, 255, 255, 0.75); }
+.theme-header .back-btn:hover { color: #fff; }
 
 .theme-header-content {
     text-align: center;
@@ -457,8 +467,8 @@ a {
 }
 
 .theme-header-desc {
-    color: var(--text-secondary);
     font-size: 16px;
+    opacity: 0.85;
 }
 
 /* ===== 关卡网格 ===== */
@@ -484,13 +494,13 @@ a {
     padding: 16px 18px;
     background: var(--bg-card);
     border-radius: var(--radius-sm);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(139, 125, 107, 0.1);
     transition: all 0.3s ease;
 }
 
 .level-card:hover {
     border-color: var(--gold);
-    box-shadow: 0 4px 16px rgba(200, 169, 110, 0.1);
+    box-shadow: 0 4px 16px rgba(184, 148, 62, 0.12);
     transform: translateX(4px);
 }
 
@@ -541,7 +551,7 @@ a {
     align-items: center;
     gap: 16px;
     padding: 12px 0 20px;
-    border-bottom: 1px solid rgba(200, 169, 110, 0.1);
+    border-bottom: 1px solid rgba(139, 125, 107, 0.12);
     margin-bottom: 20px;
     flex-wrap: wrap;
 }
@@ -588,7 +598,7 @@ a {
 .diff-btn {
     flex: 1;
     padding: 12px 8px;
-    border: 1px solid rgba(200, 169, 110, 0.2);
+    border: 1px solid rgba(184, 148, 62, 0.2);
     border-radius: var(--radius-sm);
     background: var(--bg-card);
     color: var(--text-secondary);
@@ -599,8 +609,8 @@ a {
 }
 
 .diff-btn:hover {
-    border-color: rgba(200, 169, 110, 0.5);
-    color: var(--gold);
+    border-color: rgba(184, 148, 62, 0.5);
+    color: var(--gold-dark);
 }
 
 .diff-btn.active {
@@ -614,7 +624,7 @@ a {
     background: var(--bg-card);
     border-radius: var(--radius-sm);
     padding: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(139, 125, 107, 0.1);
 }
 
 .stat-item {
@@ -622,7 +632,7 @@ a {
     justify-content: space-between;
     align-items: center;
     padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(139, 125, 107, 0.06);
 }
 
 .stat-item:last-child { border-bottom: none; }
@@ -632,7 +642,7 @@ a {
 .stat-value {
     font-size: 18px;
     font-weight: bold;
-    color: var(--gold);
+    color: var(--gold-dark);
     font-variant-numeric: tabular-nums;
 }
 
@@ -644,7 +654,7 @@ a {
 
 .action-btn {
     padding: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(139, 125, 107, 0.15);
     border-radius: var(--radius-sm);
     background: var(--bg-card);
     color: var(--text-primary);
@@ -656,12 +666,12 @@ a {
 
 .action-btn:hover {
     background: var(--bg-surface);
-    border-color: rgba(200, 169, 110, 0.4);
+    border-color: rgba(184, 148, 62, 0.4);
 }
 
-.hint-btn:hover { border-color: #4ecdc4; color: #4ecdc4; }
-.shuffle-btn:hover { border-color: #ff6b6b; color: #ff6b6b; }
-.reset-btn:hover { border-color: #ffd93d; color: #ffd93d; }
+.hint-btn:hover { border-color: #5bafa0; color: #3d8b7d; }
+.shuffle-btn:hover { border-color: #e07070; color: #c0392b; }
+.reset-btn:hover { border-color: #d4a840; color: #8b6914; }
 
 .nav-level-btn {
     display: block;
@@ -669,14 +679,14 @@ a {
     padding: 12px;
     border-radius: var(--radius-sm);
     background: var(--bg-card);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(139, 125, 107, 0.1);
     color: var(--text-secondary);
     font-size: 14px;
     transition: all 0.3s;
 }
 
 .nav-level-btn:hover {
-    color: var(--gold);
+    color: var(--gold-dark);
     border-color: var(--gold);
 }
 
@@ -695,17 +705,28 @@ a {
     padding: 6px 16px;
     background: var(--bg-card);
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(139, 125, 107, 0.1);
+}
+
+.target-image {
+    display: block;
+    max-width: 360px;
+    max-height: 200px;
+    width: auto;
+    height: auto;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    object-fit: contain;
 }
 
 .puzzle-board {
     display: grid;
     gap: 4px;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(139, 125, 107, 0.08);
     padding: 8px;
     border-radius: var(--radius);
-    border: 2px solid rgba(200, 169, 110, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(184, 148, 62, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     width: 420px;
     height: 420px;
     position: relative;
@@ -731,12 +752,12 @@ a {
 
 .tile:hover {
     transform: scale(1.03);
-    box-shadow: 0 4px 16px rgba(200, 169, 110, 0.3);
+    box-shadow: 0 4px 16px rgba(184, 148, 62, 0.3);
     z-index: 2;
 }
 
 .tile.empty {
-    background: transparent;
+    background: transparent !important;
     cursor: default;
     box-shadow: none;
 }
@@ -750,9 +771,25 @@ a {
     animation: hintPulse 0.6s ease-in-out 2;
 }
 
+/* Image-based puzzle tiles */
+.tile.image-tile {
+    border-radius: 3px;
+    text-shadow: none;
+    font-size: 0;
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+.puzzle-board.image-mode {
+    gap: 2px;
+    padding: 2px;
+    background: rgba(139, 125, 107, 0.15);
+}
+
 @keyframes hintPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(78, 205, 196, 0.6); }
-    50% { box-shadow: 0 0 0 12px rgba(78, 205, 196, 0); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(91, 175, 160, 0.6); }
+    50% { box-shadow: 0 0 0 12px rgba(91, 175, 160, 0); }
 }
 
 /* ===== 胜利弹窗 ===== */
@@ -762,7 +799,8 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -773,14 +811,14 @@ a {
 .win-message.hidden { display: none; }
 
 .win-content {
-    background: var(--bg-surface);
+    background: var(--bg-card);
     border: 2px solid var(--gold);
     border-radius: var(--radius);
     padding: 40px;
     text-align: center;
     max-width: 440px;
     width: 90%;
-    box-shadow: 0 16px 64px rgba(200, 169, 110, 0.15);
+    box-shadow: 0 16px 64px rgba(184, 148, 62, 0.15);
 }
 
 .win-icon {
@@ -789,7 +827,7 @@ a {
 }
 
 .win-content h2 {
-    color: var(--gold);
+    color: var(--gold-dark);
     font-size: 28px;
     margin-bottom: 16px;
 }
@@ -800,7 +838,7 @@ a {
     gap: 24px;
     margin-bottom: 16px;
     padding: 16px;
-    background: var(--bg-card);
+    background: var(--bg-surface);
     border-radius: var(--radius-sm);
 }
 
@@ -810,7 +848,7 @@ a {
 }
 
 .win-stats span {
-    color: var(--gold);
+    color: var(--gold-dark);
     font-weight: bold;
     font-size: 16px;
 }
@@ -818,7 +856,7 @@ a {
 .win-item-info {
     padding: 16px;
     margin-bottom: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(139, 125, 107, 0.08);
 }
 
 .win-item-info h3 {
@@ -833,6 +871,45 @@ a {
     line-height: 1.6;
 }
 
+/* ===== 文化知识弹窗 ===== */
+.win-culture {
+    margin-bottom: 16px;
+    padding: 16px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(184, 148, 62, 0.12);
+    max-height: 260px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+.win-culture::-webkit-scrollbar { width: 4px; }
+.win-culture::-webkit-scrollbar-thumb {
+    background: rgba(184, 148, 62, 0.3);
+    border-radius: 2px;
+}
+
+.win-culture-header {
+    font-size: 13px;
+    color: var(--gold-dark);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.win-culture-title {
+    font-size: 17px;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.win-culture-content {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.9;
+    text-indent: 2em;
+}
+
 .win-buttons {
     display: flex;
     gap: 10px;
@@ -845,7 +922,7 @@ a {
     border-radius: var(--radius-sm);
     border: 1px solid var(--gold);
     background: transparent;
-    color: var(--gold);
+    color: var(--gold-dark);
     cursor: pointer;
     font-size: 15px;
     transition: all 0.3s;
@@ -854,12 +931,12 @@ a {
 
 .win-btn:hover {
     background: var(--gold);
-    color: var(--bg-deep);
+    color: #fff;
 }
 
 .win-btn.next {
     background: var(--gold);
-    color: var(--bg-deep);
+    color: #fff;
     border-color: var(--gold);
 }
 
@@ -872,7 +949,7 @@ a {
 
 .win-btn.back:hover {
     background: var(--text-secondary);
-    color: var(--bg-deep);
+    color: #fff;
 }
 
 @keyframes fadeIn {
@@ -890,20 +967,20 @@ a {
 }
 
 .auth-card {
-    background: var(--bg-surface);
-    border: 1px solid rgba(200, 169, 110, 0.15);
+    background: var(--bg-card);
+    border: 1px solid rgba(184, 148, 62, 0.15);
     border-radius: var(--radius);
     padding: 40px;
     width: 100%;
     max-width: 420px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--shadow);
 }
 
 .auth-icon { font-size: 48px; text-align: center; margin-bottom: 12px; }
 
 .auth-title {
     text-align: center;
-    color: var(--gold);
+    color: var(--gold-dark);
     font-size: 26px;
     margin-bottom: 8px;
 }
@@ -929,8 +1006,8 @@ a {
 .auth-form .form-group input {
     width: 100%;
     padding: 12px 16px;
-    background: var(--bg-card);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-surface);
+    border: 1px solid rgba(139, 125, 107, 0.15);
     border-radius: var(--radius-sm);
     color: var(--text-primary);
     font-size: 15px;
@@ -966,7 +1043,7 @@ a {
     font-size: 14px;
 }
 
-.auth-switch a { color: var(--gold); font-weight: bold; }
+.auth-switch a { color: var(--gold-dark); font-weight: bold; }
 .auth-switch a:hover { text-decoration: underline; }
 
 /* ===== 通用页面布局 ===== */
@@ -979,13 +1056,188 @@ a {
 
 .page-title {
     font-size: 28px;
-    color: var(--gold);
+    color: var(--gold-dark);
     margin-bottom: 6px;
 }
 
 .page-subtitle {
     color: var(--text-secondary);
     font-size: 15px;
+}
+
+/* ===== 成就页面 ===== */
+.achievements-stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding: 12px 0 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.achievements-stats-bar strong { color: var(--gold-dark); }
+
+.achievements-section {
+    margin-bottom: 28px;
+}
+
+.achievements-theme-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 12px;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+}
+
+.achievements-theme-header:hover { opacity: 0.92; }
+
+.achievements-theme-icon { font-size: 28px; }
+
+.achievements-theme-name {
+    font-size: 20px;
+    font-weight: bold;
+    flex: 1;
+}
+
+.achievements-theme-count {
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+.achievements-theme-arrow {
+    font-size: 14px;
+    transition: transform 0.3s;
+}
+
+.achievements-theme-header.collapsed .achievements-theme-arrow {
+    transform: rotate(-90deg);
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 14px;
+    padding: 0 0 20px;
+}
+
+.achievements-grid.collapsed { display: none; }
+
+.achievement-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(139, 125, 107, 0.1);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.achievement-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 4px 16px rgba(184, 148, 62, 0.1);
+}
+
+.achievement-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+}
+
+.achievement-card-icon {
+    font-size: 32px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+}
+
+.achievement-card-info { flex: 1; min-width: 0; }
+
+.achievement-card-name {
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.achievement-card-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.achievement-card-badge {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.badge-3 { background: #5b8d9e; }
+.badge-4 { background: #8b5b9e; }
+
+.achievement-card-expand {
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+}
+
+.achievement-card.expanded .achievement-card-expand {
+    transform: rotate(180deg);
+}
+
+.achievement-card-detail {
+    display: none;
+    padding: 0 18px 18px;
+    border-top: 1px solid rgba(139, 125, 107, 0.08);
+}
+
+.achievement-card.expanded .achievement-card-detail { display: block; }
+
+.achievement-card-culture {
+    padding: 14px 0 0;
+}
+
+.achievement-card-culture-header {
+    font-size: 13px;
+    color: var(--gold-dark);
+    margin-bottom: 8px;
+}
+
+.achievement-card-culture-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.achievement-card-culture-content {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    text-indent: 2em;
+}
+
+.achievement-card-extra {
+    display: flex;
+    gap: 16px;
+    padding-top: 12px;
+    margin-top: 12px;
+    border-top: 1px solid rgba(139, 125, 107, 0.06);
+    font-size: 13px;
+    color: var(--text-secondary);
 }
 
 /* ===== 历史记录 ===== */
@@ -998,7 +1250,7 @@ a {
     font-size: 14px;
 }
 
-.history-stats-bar strong { color: var(--gold); }
+.history-stats-bar strong { color: var(--gold-dark); }
 
 .history-grid {
     display: grid;
@@ -1009,15 +1261,15 @@ a {
 
 .history-card {
     background: var(--bg-card);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(139, 125, 107, 0.1);
     border-radius: var(--radius-sm);
     padding: 18px;
     transition: all 0.3s;
 }
 
 .history-card:hover {
-    border-color: rgba(200, 169, 110, 0.2);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    border-color: rgba(184, 148, 62, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
 .history-card-header {
@@ -1037,8 +1289,8 @@ a {
     color: #fff;
 }
 
-.badge-3 { background: #1e7a8b; }
-.badge-4 { background: #8b1e8b; }
+.badge-3 { background: #5b8d9e; }
+.badge-4 { background: #8b5b9e; }
 
 .history-item {
     font-size: 18px;
@@ -1059,13 +1311,13 @@ a {
     justify-content: space-between;
     align-items: center;
     padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(139, 125, 107, 0.06);
 }
 
 .history-points {
     font-size: 16px;
     font-weight: bold;
-    color: var(--gold);
+    color: var(--gold-dark);
 }
 
 .history-date {
@@ -1117,17 +1369,17 @@ a {
 
 .settings-card {
     background: var(--bg-card);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(139, 125, 107, 0.1);
     border-radius: var(--radius);
     padding: 24px;
 }
 
 .settings-card-title {
     font-size: 18px;
-    color: var(--gold);
+    color: var(--gold-dark);
     margin-bottom: 20px;
     padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(139, 125, 107, 0.08);
 }
 
 .settings-form { display: flex; flex-direction: column; gap: 16px; }
@@ -1143,7 +1395,7 @@ a {
     width: 100%;
     padding: 10px 14px;
     background: var(--bg-surface);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(139, 125, 107, 0.15);
     border-radius: var(--radius-sm);
     color: var(--text-primary);
     font-size: 15px;
@@ -1164,7 +1416,7 @@ a {
 
 .points-display {
     font-size: 20px;
-    color: var(--gold);
+    color: var(--gold-dark);
     font-weight: bold;
     padding: 4px 0;
 }
@@ -1186,11 +1438,11 @@ a {
 
 .avatar-option input { display: none; }
 
-.avatar-option:hover { background: rgba(200, 169, 110, 0.1); }
+.avatar-option:hover { background: rgba(184, 148, 62, 0.08); }
 
 .avatar-option.selected {
     border-color: var(--gold);
-    background: rgba(200, 169, 110, 0.15);
+    background: rgba(184, 148, 62, 0.12);
 }
 
 .avatar-emoji { font-size: 28px; }
@@ -1219,7 +1471,7 @@ a {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     background: var(--bg-surface);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(139, 125, 107, 0.15);
     border-radius: 26px;
     transition: all 0.3s;
 }
@@ -1306,7 +1558,7 @@ a {
 .win-points-value {
     font-size: 28px;
     font-weight: bold;
-    color: var(--gold-light);
+    color: var(--gold-dark);
     margin-left: 6px;
 }
 
@@ -1319,6 +1571,10 @@ a {
     }
 
     .levels-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .achievements-grid {
         grid-template-columns: 1fr;
     }
 
